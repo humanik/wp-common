@@ -64,6 +64,8 @@
 		],
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",
-		"phpstan": "phpstan analyze --memory-limit=512M"
+		"phpstan": "phpstan analyze --memory-limit=512M",
+		"test-php": "phpunit -c phpunit.xml.dist --verbose",
+		"test-php-multisite": "phpunit -c tests/phpunit/multisite.xml --verbose"
 	}
 }
