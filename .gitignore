@@ -1,48 +1,43 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
+############
+## Vendor
+############
 
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
+node_modules/
+vendor/
 
-# Configuration
-wp-config.php
+############
+## OSes
+############
 
-# Example themes
-/wp-content/themes/twenty*/
+[Tt]humbs.db
+[Dd]esktop.ini
+*.DS_store
+.DS_store?
 
-# Example plugin
-/wp-content/plugins/hello.php
+############
+## AI Tools
+############
 
-# Uploads
-/wp-content/uploads/
+.claude/
+.clinerules
+.clinerules/
+.codex/
+.cursor/
+.gemini/
+.windsurf/
+CLAUDE.md
+GEMINI.md
 
-# Log files
-*.log
+############
+## PHPUnit
+############
 
-# htaccess
-/.htaccess
+.phpunit.cache/
+.phpunit.result.cache
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
+############
+## IDEs
+############
 
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+.idea/
+.vscode/
