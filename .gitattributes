@@ -2,7 +2,8 @@
 .gitattributes         export-ignore
 /.github/              export-ignore
 .gitignore             export-ignore
-/*.md                  export-ignore
+.nvmrc                 export-ignore
+.wp-env.json           export-ignore
 /LICENSE.md           -export-ignore
 /README.md            -export-ignore
 /docs/                 export-ignore
