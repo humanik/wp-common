@@ -8,30 +8,35 @@
 
 	<!-- Ignore vendor directory -->
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/phpunit/bootstrap.php</exclude-pattern>
 
 	<!-- Show progress, show sniff codes in all reports -->
-	<arg value="sp"/>
+	<arg value="sp" />
 
 	<!-- Set minimum supported PHP version -->
-	<config name="testVersion" value="7.4-"/>
+	<config name="testVersion" value="8.4-" />
 
 	<!-- Enable colors in output -->
-	<arg name="colors"/>
+	<arg name="colors" />
 
 	<!-- WordPress Coding Standards -->
-	<config name="minimum_supported_wp_version" value="6.0"/>
+	<config name="minimum_supported_wp_version" value="6.0" />
 	<rule ref="WordPress-Docs">
+		<exclude name="Generic.Commenting" />
+		<exclude name="Squiz.Commenting" />
+		<exclude name="Squiz.Commenting.FunctionComment.Missing" />
+		<exclude name="Squiz.PHP.DisallowSizeFunctionsInLoops.Found" />
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="WordPress-Extra">
-		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="WordPress.Files.FileName" />
 	</rule>
 
 	<!-- WordPress text domain -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="wp-common"/>
+				<element value="wp-common" />
 			</property>
 		</properties>
 	</rule>
@@ -40,18 +45,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="wp_common"/>
-				<element value="Humanik\WP_Common"/>
+				<element value="wp_common" />
+				<element value="Humanik\WP_Common" />
 			</property>
 		</properties>
-	</rule>
-
-	<!-- Check PHP 7.4 compatibility -->
-	<rule ref="PHPCompatibility">
-		<!-- Exclude functions that are polyfilled in WordPress -->
-		<exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_is_listFound"/>
-		<exclude name="PHPCompatibility.FunctionUse.NewFunctions.str_containsFound"/>
-		<exclude name="PHPCompatibility.FunctionUse.NewFunctions.str_starts_withFound"/>
-		<exclude name="PHPCompatibility.FunctionUse.NewFunctions.str_ends_withFound"/>
 	</rule>
 </ruleset>

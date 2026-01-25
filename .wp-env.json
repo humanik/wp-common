@@ -1,3 +1,5 @@
 {
-	"plugins": [ "." ]
+	"core": "./wordpress",
+	"plugins": ["."],
+	"phpVersion": "8.4"
 }

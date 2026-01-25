@@ -13,7 +13,6 @@ use WP_UnitTestCase;
  * Sample test class.
  */
 class Sample_Test extends WP_UnitTestCase {
-
 	/**
 	 * Test that true is true.
 	 */

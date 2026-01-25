@@ -20,18 +20,20 @@ Documentation coming soon.
 
 ### Requirements
 
-- PHP 7.4 or higher
+- PHP 8.4 or higher
 - Composer
 - Node.js and npm
 
 ### Setup
 
 1. Install PHP dependencies:
+
 ```bash
 composer install
 ```
 
 2. Install JavaScript dependencies:
+
 ```bash
 npm install
 ```
@@ -39,6 +41,7 @@ npm install
 ### Testing
 
 Run PHP tests:
+
 ```bash
 composer test-php
 ```
@@ -46,21 +49,25 @@ composer test-php
 ### Linting
 
 Run PHP linting:
+
 ```bash
 composer phpcs
 ```
 
 Fix PHP code style issues:
+
 ```bash
 composer phpcbf
 ```
 
 Run static analysis:
+
 ```bash
 composer phpstan
 ```
 
 Run JavaScript linting:
+
 ```bash
 npm run lint-js
 ```
