@@ -19,13 +19,21 @@
 	<!-- Enable colors in output -->
 	<arg name="colors" />
 
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+		<type>error</type>
+	</rule>
+
 	<!-- WordPress Coding Standards -->
 	<config name="minimum_supported_wp_version" value="6.0" />
 	<rule ref="WordPress-Docs">
 		<exclude name="Generic.Commenting" />
 		<exclude name="Squiz.Commenting" />
 		<exclude name="Squiz.Commenting.FunctionComment.Missing" />
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax" />
 		<exclude name="Squiz.PHP.DisallowSizeFunctionsInLoops.Found" />
+		<exclude
+			name="Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound"
+		/>
 		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 	<rule ref="WordPress-Extra">
@@ -46,7 +54,7 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="wp_common" />
-				<element value="Humanik\WP_Common" />
+				<element value="Humanik\WP" />
 			</property>
 		</properties>
 	</rule>

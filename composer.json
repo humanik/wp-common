@@ -21,12 +21,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Humanik\\WP_Common\\": "includes/"
+			"Humanik\\WP\\": "includes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Humanik\\WP_Common\\PHPUnit\\Tests\\": "tests/phpunit/tests"
+			"Humanik\\WP\\PHPUnit\\Tests\\": "tests/phpunit/tests"
 		}
 	},
 	"minimum-stability": "dev",
@@ -35,7 +35,8 @@
 		"php": ">=8.4",
 		"ext-json": "*",
 		"illuminate/support": "^12.48",
-		"illuminate/container": "^12.48"
+		"illuminate/container": "^12.48",
+		"johnbillion/args": "^2.3"
 	},
 	"require-dev": {
 		"automattic/vipwpcs": "^3.0",
@@ -51,7 +52,8 @@
 		"wp-phpunit/wp-phpunit": "^6.8",
 		"yoast/phpunit-polyfills": "^4.0",
 		"johnpbloch/wordpress": "^6.9",
-		"wp-cli/wp-cli": "^2.12"
+		"wp-cli/wp-cli": "^2.12",
+		"php-stubs/acf-pro-stubs": "^6.5"
 	},
 	"config": {
 		"allow-plugins": {

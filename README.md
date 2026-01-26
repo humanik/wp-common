@@ -43,7 +43,7 @@ npm install
 Run PHP tests:
 
 ```bash
-composer test-php
+npm run test-php
 ```
 
 ### Linting

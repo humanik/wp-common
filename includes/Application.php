@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP_Common\Support;
+namespace Humanik\WP\Support;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -24,42 +24,42 @@ class Application extends Container implements ApplicationContract {
 	 *
 	 * @var array<callable>
 	 */
-	protected array $booting_callbacks = array();
+	protected array $booting_callbacks = [];
 
 	/**
 	 * The array of booted callbacks.
 	 *
 	 * @var array<callable>
 	 */
-	protected array $booted_callbacks = array();
+	protected array $booted_callbacks = [];
 
 	/**
 	 * The array of terminating callbacks.
 	 *
 	 * @var list<callable>
 	 */
-	protected array $terminating_callbacks = array();
+	protected array $terminating_callbacks = [];
 
 	/**
 	 * The names of the loaded service providers.
 	 *
 	 * @var array<class-string<\Illuminate\Support\ServiceProvider>,true>
 	 */
-	protected array $loaded_providers = array();
+	protected array $loaded_providers = [];
 
 	/**
 	 * All of the registered service providers.
 	 *
 	 * @var array<\Illuminate\Support\ServiceProvider>
 	 */
-	protected array $service_providers = array();
+	protected array $service_providers = [];
 
 	/**
 	 * The deferred services and their providers.
 	 *
 	 * @var array<string,string>
 	 */
-	protected array $deferred_services = array();
+	protected array $deferred_services = [];
 
 	public function __construct( public readonly string $entry ) {
 		$this->basepath = \dirname( $entry );
@@ -73,49 +73,49 @@ class Application extends Container implements ApplicationContract {
 		return '1.0.0';
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function basePath( $path = '' ): string {
 		return \path_join( $this->basepath, $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function bootstrapPath( $path = '' ): string {
 		return \path_join( $this->basepath . '/bootstrap', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function configPath( $path = '' ): string {
 		return \path_join( $this->basepath . '/config', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function databasePath( $path = '' ): string {
 		return \path_join( $this->basepath . '/database', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function langPath( $path = '' ): string {
 		return \path_join( $this->basepath . '/lang', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function publicPath( $path = '' ): string {
 		return \path_join( $this->basepath . '/public', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function resourcePath( $path = '' ): string {
 		return \path_join( $this->basepath . '/resources', $path );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function storagePath( $path = '' ): string {
 		return \path_join( $this->basepath . '/storage', $path );
 	}
 
-	/** @inheritDoc
+	/** {@inheritDoc}
 	 *
-	 * @param string ...$environments
+	 * @param  string  ...$environments
 	 */
 	public function environment( ...$environments ) {
 		$env = \wp_get_environment_type();
@@ -142,19 +142,18 @@ class Application extends Container implements ApplicationContract {
 		return $this;
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function maintenanceMode() {
 		throw new \Exception( 'Not implemented' );
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function isDownForMaintenance(): bool {
 		return false;
 	}
 
-	/** @inheritDoc */
-	public function registerConfiguredProviders(): void {
-	}
+	/** {@inheritDoc} */
+	public function registerConfiguredProviders(): void {}
 
 	/**
 	 * Get the registered service provider instance if it exists.
@@ -163,7 +162,7 @@ class Application extends Container implements ApplicationContract {
 		return \array_values( $this->getProviders( $provider ) )[0] ?? null;
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function register( $provider, $force = false ): ServiceProvider {
 		$registered = $this->getProvider( $provider );
 		if ( $registered && ! $force ) {
@@ -185,7 +184,7 @@ class Application extends Container implements ApplicationContract {
 		return $provider;
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function registerDeferredProvider( $provider, $service = null ) {
 		if ( $service ) {
 			unset( $this->deferred_services[ $service ] );
@@ -203,7 +202,7 @@ class Application extends Container implements ApplicationContract {
 		}
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function resolveProvider( $provider ) {
 		return new $provider( $this ); // @phpstan-ignore-line
 	}
@@ -213,7 +212,7 @@ class Application extends Container implements ApplicationContract {
 	}
 
 	/**
-	 * @param iterable<class-string<\Illuminate\Support\ServiceProvider>> $providers
+	 * @param  iterable<class-string<\Illuminate\Support\ServiceProvider>>  $providers
 	 */
 	public function withProviders( iterable $providers ): self {
 		foreach ( $providers as $provider ) {
@@ -223,7 +222,7 @@ class Application extends Container implements ApplicationContract {
 		return $this;
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function boot(): void {
 		if ( $this->isBooted() ) {
 			return;
@@ -246,12 +245,12 @@ class Application extends Container implements ApplicationContract {
 		$this->fireAppCallbacks( $this->booted_callbacks );
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function booting( $callback ) {
 		$this->booting_callbacks[] = $callback;
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function booted( $callback ) {
 		$this->booted_callbacks[] = $callback;
 
@@ -261,23 +260,22 @@ class Application extends Container implements ApplicationContract {
 	}
 
 	/**
-	 * @param array<class-string> $bootstrappers
+	 * @param  array<class-string>  $bootstrappers
 	 */
-	public function bootstrapWith( array $bootstrappers ): void {
-	}
+	public function bootstrapWith( array $bootstrappers ): void {}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function getLocale(): string {
 		return \get_locale();
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function getNamespace(): string {
 		return 'App\\';
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 *
 	 * @return array<\Illuminate\Support\ServiceProvider>
 	 */
@@ -288,33 +286,32 @@ class Application extends Container implements ApplicationContract {
 		return Arr::where( $this->service_providers, static fn ( $value ): bool => $value instanceof $name );
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function hasBeenBootstrapped(): bool {
 		return true;
 	}
 
-	/** @inheritdoc */
-	public function loadDeferredProviders(): void {
-	}
+	/** {@inheritdoc} */
+	public function loadDeferredProviders(): void {}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function setLocale( $locale ): void {
 		\switch_to_locale( $locale );
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function shouldSkipMiddleware(): bool {
 		return false;
 	}
 
-	/** @inheritDoc */
+	/** {@inheritDoc} */
 	public function terminating( $callback ) {
 		$this->terminating_callbacks[] = $callback; // @phpstan-ignore assign.propertyType
 
 		return $this;
 	}
 
-	/** @inheritdoc */
+	/** {@inheritdoc} */
 	public function terminate(): void {
 		$index = 0;
 
@@ -341,7 +338,7 @@ class Application extends Container implements ApplicationContract {
 		$provider->callBootingCallbacks();
 
 		if ( \method_exists( $provider, 'boot' ) ) {
-			$this->call( array( $provider, 'boot' ) );
+			$this->call( [ $provider, 'boot' ] );
 		}
 
 		$provider->callBootedCallbacks();
@@ -350,7 +347,7 @@ class Application extends Container implements ApplicationContract {
 	/**
 	 * Call the booting callbacks for the application.
 	 *
-	 * @param array<callable> $callbacks
+	 * @param  array<callable>  $callbacks
 	 */
 	protected function fireAppCallbacks( array &$callbacks ): void {
 		$index = 0;
