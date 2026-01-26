@@ -20,7 +20,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	 */
 	public function test_constructor_sets_post_type(): void {
 		$builder = new PostQueryBuilder( Post::class );
-		$result  = $builder->result();
+		$result  = $builder->fetch();
 
 		$this->assertSame( 'post', $result->wp_query->query_vars['post_type'] );
 	}
@@ -46,7 +46,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_author_parameters(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->author( 5 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( '5', $result->wp_query->query_vars['author'] );
 	}
@@ -57,7 +57,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_author_name_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->author_name( 'admin' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'admin', $result->wp_query->query_vars['author_name'] );
 	}
@@ -68,7 +68,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_author__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->author__in( [ 1, 2, 3 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 1, 2, 3 ], $result->wp_query->query_vars['author__in'] );
 	}
@@ -79,7 +79,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_author__not_in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->author__not_in( [ 4, 5 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 4, 5 ], $result->wp_query->query_vars['author__not_in'] );
 	}
@@ -90,7 +90,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_cat_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->cat( 10 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( '10', $result->wp_query->query_vars['cat'] );
 	}
@@ -101,7 +101,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_category_name_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->category_name( 'news' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'news', $result->wp_query->query_vars['category_name'] );
 	}
@@ -112,7 +112,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_category__and_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->category__and( [ 1, 2 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 1, 2 ], $result->wp_query->query_vars['category__and'] );
 	}
@@ -123,7 +123,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_category__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->category__in( [ 3, 4, 5 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 3, 4, 5 ], $result->wp_query->query_vars['category__in'] );
 	}
@@ -134,7 +134,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_category__not_in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->category__not_in( [ 6, 7 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 6, 7 ], $result->wp_query->query_vars['category__not_in'] );
 	}
@@ -145,7 +145,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag( 'featured' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'featured', $result->wp_query->query_vars['tag'] );
 	}
@@ -156,7 +156,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag_id_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag_id( 15 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 15, $result->wp_query->query_vars['tag_id'] );
 	}
@@ -167,7 +167,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag__and_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag__and( [ 1, 2 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 1, 2 ], $result->wp_query->query_vars['tag__and'] );
 	}
@@ -178,7 +178,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag__in( [ 3, 4 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 3, 4 ], $result->wp_query->query_vars['tag__in'] );
 	}
@@ -189,7 +189,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag__not_in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag__not_in( [ 5, 6 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 5, 6 ], $result->wp_query->query_vars['tag__not_in'] );
 	}
@@ -200,7 +200,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag_slug__and_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag_slug__and( [ 'tag1', 'tag2' ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 'tag1', 'tag2' ], $result->wp_query->query_vars['tag_slug__and'] );
 	}
@@ -211,7 +211,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_tag_slug__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->tag_slug__in( [ 'tag3', 'tag4' ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 'tag3', 'tag4' ], $result->wp_query->query_vars['tag_slug__in'] );
 	}
@@ -222,7 +222,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_search_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->search( 'test query' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'test query', $result->wp_query->query_vars['s'] );
 	}
@@ -233,7 +233,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_title_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_title( 'My Post Title' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'My Post Title', $result->wp_query->query_vars['title'] );
 	}
@@ -244,7 +244,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_parent_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_parent( 50 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 50, $result->wp_query->query_vars['post_parent'] );
 	}
@@ -255,7 +255,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_parent__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_parent__in( [ 10, 20 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 10, 20 ], $result->wp_query->query_vars['post_parent__in'] );
 	}
@@ -266,7 +266,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_parent__not_in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_parent__not_in( [ 30, 40 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 30, 40 ], $result->wp_query->query_vars['post_parent__not_in'] );
 	}
@@ -277,7 +277,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post__in( [ 1, 2, 3 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 1, 2, 3 ], $result->wp_query->query_vars['post__in'] );
 	}
@@ -288,7 +288,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post__not_in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post__not_in( [ 4, 5, 6 ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 4, 5, 6 ], $result->wp_query->query_vars['post__not_in'] );
 	}
@@ -299,7 +299,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_name__in_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_name__in( [ 'slug1', 'slug2' ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 'slug1', 'slug2' ], $result->wp_query->query_vars['post_name__in'] );
 	}
@@ -310,7 +310,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_page_id_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->page_id( 100 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 100, $result->wp_query->query_vars['page_id'] );
 	}
@@ -321,7 +321,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_pagename_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->pagename( 'about-us' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'about-us', $result->wp_query->query_vars['pagename'] );
 	}
@@ -332,7 +332,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_status_string_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_status( 'draft' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'draft', $result->wp_query->query_vars['post_status'] );
 	}
@@ -343,7 +343,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_status_array_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_status( [ 'draft', 'publish' ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 'draft', 'publish' ], $result->wp_query->query_vars['post_status'] );
 	}
@@ -354,7 +354,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_comment_status_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->comment_status( 'open' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'open', $result->wp_query->query_vars['comment_status'] );
 	}
@@ -365,7 +365,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_ping_status_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->ping_status( 'closed' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'closed', $result->wp_query->query_vars['ping_status'] );
 	}
@@ -376,7 +376,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_posts_per_page_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->posts_per_page( 25 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 25, $result->wp_query->query_vars['posts_per_page'] );
 	}
@@ -387,7 +387,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_posts_per_page_all(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->posts_per_page( -1 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( -1, $result->wp_query->query_vars['posts_per_page'] );
 	}
@@ -398,7 +398,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_paged_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->paged( 3 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 3, $result->wp_query->query_vars['paged'] );
 	}
@@ -409,7 +409,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_offset_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->offset( 10 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 10, $result->wp_query->query_vars['offset'] );
 	}
@@ -420,7 +420,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_nopaging_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->nopaging();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertTrue( $result->wp_query->query_vars['nopaging'] );
 	}
@@ -431,7 +431,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_nopaging_false_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->nopaging( false );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertFalse( $result->wp_query->query_vars['nopaging'] );
 	}
@@ -442,7 +442,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_order_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->order( 'ASC' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'ASC', $result->wp_query->query_vars['order'] );
 	}
@@ -453,7 +453,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_orderby_string_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->orderby( 'title' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'title', $result->wp_query->query_vars['orderby'] );
 	}
@@ -464,7 +464,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_orderby_array_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->orderby( [ 'title', 'date' ] );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 'title', 'date' ], $result->wp_query->query_vars['orderby'] );
 	}
@@ -475,7 +475,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_year_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->year( 2024 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 2024, $result->wp_query->query_vars['year'] );
 	}
@@ -486,7 +486,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_monthnum_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->monthnum( 6 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 6, $result->wp_query->query_vars['monthnum'] );
 	}
@@ -497,7 +497,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_week_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->week( 25 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 25, $result->wp_query->query_vars['w'] );
 	}
@@ -508,7 +508,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_day_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->day( 15 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 15, $result->wp_query->query_vars['day'] );
 	}
@@ -519,7 +519,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_hour_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->hour( 14 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 14, $result->wp_query->query_vars['hour'] );
 	}
@@ -530,7 +530,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_minute_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->minute( 30 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 30, $result->wp_query->query_vars['minute'] );
 	}
@@ -541,7 +541,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_second_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->second( 45 );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 45, $result->wp_query->query_vars['second'] );
 	}
@@ -552,7 +552,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_meta_compare_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->meta_compare( '!=' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( '!=', $result->wp_query->query_vars['meta_compare'] );
 	}
@@ -563,7 +563,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_permission_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->permission( 'readable' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'readable', $result->wp_query->query_vars['perm'] );
 	}
@@ -574,7 +574,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_post_mime_type_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->post_mime_type( 'image/jpeg' );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'image/jpeg', $result->wp_query->query_vars['post_mime_type'] );
 	}
@@ -585,7 +585,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_cache_results_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->cache_results( false );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertFalse( $result->wp_query->query_vars['cache_results'] );
 	}
@@ -596,7 +596,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_update_post_meta_cache_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->update_post_meta_cache( false );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertFalse( $result->wp_query->query_vars['update_post_meta_cache'] );
 	}
@@ -607,7 +607,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_update_post_term_cache_parameter(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->update_post_term_cache( false );
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertFalse( $result->wp_query->query_vars['update_post_term_cache'] );
 	}
@@ -618,7 +618,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_published_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->published();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'publish', $result->wp_query->query_vars['post_status'] );
 	}
@@ -629,7 +629,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_draft_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->draft();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'draft', $result->wp_query->query_vars['post_status'] );
 	}
@@ -640,7 +640,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_pending_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->pending();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'pending', $result->wp_query->query_vars['post_status'] );
 	}
@@ -651,7 +651,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_trashed_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->trashed();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'trash', $result->wp_query->query_vars['post_status'] );
 	}
@@ -662,7 +662,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_latest_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->latest();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'date', $result->wp_query->query_vars['orderby'] );
 		$this->assertSame( 'DESC', $result->wp_query->query_vars['order'] );
@@ -674,7 +674,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	public function test_oldest_convenience_method(): void {
 		$builder = new PostQueryBuilder( Post::class );
 		$builder->oldest();
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( 'date', $result->wp_query->query_vars['orderby'] );
 		$this->assertSame( 'ASC', $result->wp_query->query_vars['order'] );
@@ -692,7 +692,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 			->posts_per_page( 10 )
 			->order( 'DESC' )
 			->orderby( 'date' )
-			->result();
+			->fetch();
 
 		$this->assertSame( 'publish', $result->wp_query->query_vars['post_status'] );
 		$this->assertSame( '1', $result->wp_query->query_vars['author'] );
@@ -714,7 +714,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 				'c' => 3,
 			]
 		);
-		$result = $builder->result();
+		$result = $builder->fetch();
 
 		$this->assertSame( [ 1, 2, 3 ], $result->wp_query->query_vars['post__in'] );
 	}
@@ -741,7 +741,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 		self::factory()->post->create( [ 'post_status' => 'draft' ] );
 
 		$builder = new PostQueryBuilder( Post::class );
-		$result  = $builder->published()->result();
+		$result  = $builder->published()->fetch();
 
 		$this->assertGreaterThanOrEqual( 2, $result->wp_query->found_posts );
 		$this->assertContains( $post_id1, wp_list_pluck( $result->wp_query->posts, 'ID' ) );
@@ -762,7 +762,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 		self::factory()->post->create( [ 'post_status' => 'publish' ] );
 
 		$builder = new PostQueryBuilder( Post::class );
-		$result  = $builder->published()->author( $user_id )->result();
+		$result  = $builder->published()->author( $user_id )->fetch();
 
 		$this->assertSame( 1, $result->wp_query->found_posts );
 		$this->assertSame( $post_id, $result->wp_query->posts[0]->ID );
@@ -786,7 +786,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 		);
 
 		$builder = new PostQueryBuilder( Post::class );
-		$result  = $builder->published()->search( 'Unique Search Term' )->result();
+		$result  = $builder->published()->search( 'Unique Search Term' )->fetch();
 
 		$this->assertSame( 1, $result->wp_query->found_posts );
 		$this->assertSame( $post_id, $result->wp_query->posts[0]->ID );
@@ -815,7 +815,7 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 			->orderby( 'title' )
 			->order( 'DESC' )
 			->posts_per_page( 2 )
-			->result();
+			->fetch();
 
 		$ids = wp_list_pluck( $result->wp_query->posts, 'ID' );
 

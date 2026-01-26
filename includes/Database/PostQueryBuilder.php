@@ -659,7 +659,7 @@ class PostQueryBuilder {
 	/**
 	 * @phpstan-return PostQueryResult<T>
 	 */
-	public function result(): PostQueryResult {
+	public function fetch(): PostQueryResult {
 		$wp_query = new \WP_Query( $this->args->toArray() );
 
 		return new PostQueryResult( $this->model, $wp_query );

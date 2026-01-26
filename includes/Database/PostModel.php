@@ -87,7 +87,7 @@ abstract class PostModel {
 	public static function from_name( string $name ): static {
 		return static::query()
 			->post_name__in( [ $name ] )
-			->result()
+			->fetch()
 			->first();
 	}
 
