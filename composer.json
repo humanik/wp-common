@@ -32,7 +32,7 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"require": {
-		"php": ">=8.4",
+		"php": ">=8.3",
 		"ext-json": "*",
 		"illuminate/support": "^12.48",
 		"illuminate/container": "^12.48",
@@ -61,9 +61,6 @@
 			"php-http/discovery": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"johnpbloch/wordpress-core-installer": true
-		},
-		"platform": {
-			"php": "8.4"
 		}
 	},
 	"scripts": {
@@ -73,8 +70,8 @@
 		],
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",
-		"phpstan": "phpstan analyze --memory-limit=512M",
-		"test-php": "phpunit -c phpunit.xml.dist --verbose",
-		"test-php-multisite": "phpunit -c tests/phpunit/multisite.xml --verbose"
+		"phpstan": "phpstan analyze --memory-limit=1G",
+		"test": "npm run test-php",
+		"test-multisite": "npm run test-php-multisite"
 	}
 }

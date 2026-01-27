@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 WP Common is a PHP library providing common utilities for WordPress development. It includes a Laravel-compatible dependency injection container and an ORM-like database layer for WordPress posts.
 
 - **Namespace**: `Humanik\WP`
-- **PHP Version**: 8.4+
+- **PHP Version**: 8.3+
 - **WordPress Version**: 6.0+
 
 ## Commands

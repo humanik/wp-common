@@ -20,7 +20,7 @@ Documentation coming soon.
 
 ### Requirements
 
-- PHP 8.4 or higher
+- PHP 8.3 or higher
 - Composer
 - Node.js and npm
 
