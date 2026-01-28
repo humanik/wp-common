@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\Tests\Database\Fields;
+namespace Humanik\WP\PHPUnit\Tests\Database\Fields;
 
 use Humanik\WP\Database\Fields\PostFields;
 use WP_UnitTestCase;

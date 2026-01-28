@@ -58,4 +58,27 @@
 			</property>
 		</properties>
 	</rule>
+
+	<rule ref="SlevomatCodingStandard.Classes.MethodSpacing" />
+
+	<rule ref="SlevomatCodingStandard.Namespaces.UseSpacing">
+		<properties>
+			<property name="linesCountBetweenUseTypes" value="1" />
+		</properties>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Namespaces.UselessAlias" />
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<property name="searchAnnotations" value="true" />
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+		<properties>
+			<property name="rootNamespaces" type="array">
+				<element key="includes" value="Humanik\WP" />
+				<element key="tests/phpunit/tests" value="Humanik\WP\PHPUnit\Tests" />
+			</property>
+		</properties>
+	</rule>
 </ruleset>

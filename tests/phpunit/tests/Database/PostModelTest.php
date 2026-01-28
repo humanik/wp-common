@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\Tests\Database;
+namespace Humanik\WP\PHPUnit\Tests\Database;
 
 use Humanik\WP\Database\Post;
 use Humanik\WP\Database\PostQueryBuilder;

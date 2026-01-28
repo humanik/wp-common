@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\Tests\Support;
+namespace Humanik\WP\PHPUnit\Tests\Support;
 
 use Humanik\WP\Support\Stdin;
 use WP_UnitTestCase;
