@@ -177,6 +177,7 @@ class PostModelTest extends WP_UnitTestCase {
 		$post->title = 'Updated Title';
 		$post->save();
 
+		$this->assertSame( 'Updated Title', $post->title );
 		$this->assertSame( 'Updated Title', \get_the_title( $post_id ) );
 	}
 

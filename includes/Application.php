@@ -124,7 +124,7 @@ class Application extends Container implements ApplicationContract {
 	}
 
 	public function runningInConsole(): bool {
-		return \defined( 'WP_CLI' ) && WP_CLI;
+		return \defined( 'WP_CLI' ) && \constant( 'WP_CLI' );
 	}
 
 	public function runningUnitTests(): bool {
