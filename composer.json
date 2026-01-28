@@ -1,24 +1,6 @@
 {
 	"name": "humanik/wp-common",
 	"description": "Useful common classes for WordPress development",
-	"license": "GPL-2.0-or-later",
-	"type": "library",
-	"keywords": [
-		"wordpress",
-		"common",
-		"utilities"
-	],
-	"authors": [
-		{
-			"name": "Humanik",
-			"homepage": "https://github.com/humanik"
-		}
-	],
-	"homepage": "https://github.com/humanik/wp-common",
-	"support": {
-		"issues": "https://github.com/humanik/wp-common/issues",
-		"source": "https://github.com/humanik/wp-common"
-	},
 	"autoload": {
 		"psr-4": {
 			"Humanik\\WP\\": "includes/"
@@ -71,7 +53,7 @@
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",
 		"phpstan": "phpstan analyze --memory-limit=1G",
-		"test": "npm run test-php",
+		"test": "npm run test",
 		"test-multisite": "npm run test-php-multisite"
 	}
 }

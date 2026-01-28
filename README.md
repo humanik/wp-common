@@ -38,12 +38,20 @@ composer install
 npm install
 ```
 
+### Running
+
+Start the development environment:
+
+```bash
+npm start
+```
+
 ### Testing
 
 Run PHP tests:
 
 ```bash
-npm run test-php
+npm test
 ```
 
 ### Linting
@@ -64,12 +72,6 @@ Run static analysis:
 
 ```bash
 composer phpstan
-```
-
-Run JavaScript linting:
-
-```bash
-npm run lint-js
 ```
 
 ## License

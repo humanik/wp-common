@@ -16,7 +16,7 @@ WP Common is a PHP library providing common utilities for WordPress development.
 
 ```bash
 npm start                    # Start wp-env Docker environment
-npm run test-php             # Run PHPUnit tests
+npm test                     # Run PHPUnit tests
 npm run test-php-multisite   # Run multisite tests
 npm stop                     # Stop wp-env
 ```
@@ -28,6 +28,7 @@ composer phpcs      # Check coding standards
 composer phpcbf     # Auto-fix coding standard issues
 composer phpstan    # Run static analysis (max level)
 composer lint       # Run both phpcs and phpstan
+composer test       # Run tests, same as 'npm test'
 ```
 
 ## Architecture
