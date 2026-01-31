@@ -385,4 +385,209 @@ class PostFieldsTest extends WP_UnitTestCase {
 		$this->assertNotContains( 'old1', $meta_values );
 		$this->assertContains( 'new1', $meta_values );
 	}
+
+	/**
+	 * Test that acf registers field with acf_meta store type.
+	 */
+	public function test_acf_registers_field_with_acf_meta_store_type(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image' );
+
+		$this->assertTrue( $fields->has( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that acf uses name as store_key by default.
+	 */
+	public function test_acf_uses_name_as_store_key_by_default(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', 'default_value' );
+
+		$fields->set( 'hero_image', 'test_value' );
+
+		$this->assertSame( 'test_value', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that acf uses custom store_key when provided.
+	 */
+	public function test_acf_uses_custom_store_key_when_provided(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', '', 'field_hero_image' );
+
+		$this->assertTrue( $fields->has( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that acf field returns default for new post.
+	 */
+	public function test_acf_returns_default_for_new_post(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', 'default_image.jpg' );
+
+		$this->assertSame( 'default_image.jpg', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that get returns pending ACF change.
+	 */
+	public function test_get_returns_pending_acf_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$fields->set( 'hero_image', 'new_image.jpg' );
+
+		$this->assertSame( 'new_image.jpg', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that set tracks ACF change.
+	 */
+	public function test_set_tracks_acf_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$fields->set( 'hero_image', 'new_image.jpg' );
+
+		$this->assertTrue( $fields->is_dirty() );
+		$this->assertSame( 'new_image.jpg', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that is_dirty returns true after ACF change.
+	 */
+	public function test_is_dirty_true_after_acf_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$fields->set( 'hero_image', 'changed_image.jpg' );
+
+		$this->assertTrue( $fields->is_dirty() );
+	}
+
+	/**
+	 * Test that is_dirty returns false after save with ACF changes.
+	 */
+	public function test_is_dirty_false_after_save_with_acf_changes(): void {
+		if ( ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$fields->set( 'hero_image', 'new_image.jpg' );
+		$this->assertTrue( $fields->is_dirty() );
+
+		$fields->save();
+		$this->assertFalse( $fields->is_dirty() );
+	}
+
+	/**
+	 * Test that save updates ACF field.
+	 */
+	public function test_save_updates_acf_field(): void {
+		if ( ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$fields->set( 'hero_image', 'saved_image.jpg' );
+		$fields->save();
+
+		$this->assertSame( 'saved_image.jpg', \get_field( 'hero_image', $post_id ) );
+	}
+
+	/**
+	 * Test that get loads ACF field from database.
+	 */
+	public function test_get_loads_acf_field_from_database(): void {
+		if ( ! \function_exists( 'get_field' ) || ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\update_field( 'hero_image', 'stored_image.jpg', $post_id );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero_image', '' );
+
+		$this->assertSame( 'stored_image.jpg', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that acf field with custom store_key saves correctly.
+	 */
+	public function test_acf_with_custom_store_key_saves_correctly(): void {
+		if ( ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero', '', 'hero_image_field' );
+
+		$fields->set( 'hero', 'custom_key_image.jpg' );
+		$fields->save();
+
+		$this->assertSame( 'custom_key_image.jpg', \get_field( 'hero_image_field', $post_id ) );
+	}
+
+	/**
+	 * Test that acf field with custom store_key loads correctly.
+	 */
+	public function test_acf_with_custom_store_key_loads_correctly(): void {
+		if ( ! \function_exists( 'get_field' ) || ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\update_field( 'hero_image_field', 'loaded_image.jpg', $post_id );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero', '', 'hero_image_field' );
+
+		$this->assertSame( 'loaded_image.jpg', $fields->get( 'hero' ) );
+	}
+
+	/**
+	 * Test that acf returns default when database value is empty.
+	 */
+	public function test_acf_returns_default_when_database_value_is_empty(): void {
+		if ( ! \function_exists( 'get_field' ) || ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\update_field( 'hero_image', '', $post_id );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'hero_image', 'fallback_image.jpg' );
+
+		$this->assertSame( 'fallback_image.jpg', $fields->get( 'hero_image' ) );
+	}
+
+	/**
+	 * Test that acf returns default when database value is empty array.
+	 */
+	public function test_acf_returns_default_when_database_value_is_empty_array(): void {
+		if ( ! \function_exists( 'get_field' ) || ! \function_exists( 'update_field' ) ) {
+			$this->markTestSkipped( 'ACF is not available.' );
+		}
+
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\update_field( 'gallery', [], $post_id );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->acf( 'gallery', [ 'default.jpg' ] );
+
+		$this->assertSame( [ 'default.jpg' ], $fields->get( 'gallery' ) );
+	}
 }

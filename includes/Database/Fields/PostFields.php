@@ -104,6 +104,15 @@ class PostFields {
 		);
 	}
 
+	public function acf( string $name, mixed $default = '', ?string $store_key = null ): void {
+		$this->add(
+			name: $name,
+			store_key: $store_key ?? $name,
+			store_type: 'acf_meta',
+			default: $default,
+		);
+	}
+
 	/**
 	 * Get a field value.
 	 *
