@@ -73,6 +73,22 @@ class Application extends Container implements ApplicationContract {
 		return '1.0.0';
 	}
 
+	public function url( string $path = '' ): string {
+		$baseurl = $this->baseurl();
+
+		return $path ? $baseurl . '/' . \ltrim( $path, '/' ) : $baseurl;
+	}
+
+	protected function baseurl(): string {
+		if ( \str_starts_with( $this->basepath, \get_theme_root() ) ) {
+			$relative = \ltrim( \substr( $this->basepath, \strlen( \get_theme_root() ) ), '/' );
+
+			return \get_theme_root_uri() . '/' . $relative;
+		}
+
+		return \plugins_url( '', $this->entry );
+	}
+
 	/** {@inheritDoc} */
 	public function basePath( $path = '' ): string {
 		return \path_join( $this->basepath, $path );
