@@ -51,4 +51,27 @@ class Stdin {
 
 		return false !== $ready && $ready > 0;
 	}
+
+	/**
+	 * Read all available stdin content.
+	 *
+	 * @param  resource|null  $stream  Input stream (defaults to STDIN).
+	 * @return ?string Content string or null when no content is available.
+	 */
+	public static function get_content( mixed $stream = null ): ?string {
+		$use_default_stdin = ! \is_resource( $stream );
+		$stream            = $use_default_stdin ? \STDIN : $stream;
+
+		if ( $use_default_stdin && ! self::has_content( $stream ) ) {
+			return null;
+		}
+
+		$content = \stream_get_contents( $stream );
+
+		if ( false === $content || '' === $content ) {
+			return null;
+		}
+
+		return $content;
+	}
 }

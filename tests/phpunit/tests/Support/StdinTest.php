@@ -61,4 +61,26 @@ class StdinTest extends WP_UnitTestCase {
 		fclose( $write );
 		fclose( $read );
 	}
+
+	public function test_get_content_reads_entire_stream(): void {
+		$stream = fopen( 'php://temp', 'r+' );
+		fwrite( $stream, "first\nsecond" );
+		rewind( $stream );
+
+		$content = Stdin::get_content( $stream );
+
+		fclose( $stream );
+
+		$this->assertSame( "first\nsecond", $content );
+	}
+
+	public function test_get_content_returns_null_for_empty_stream(): void {
+		$stream = fopen( 'php://temp', 'r+' );
+
+		$content = Stdin::get_content( $stream );
+
+		fclose( $stream );
+
+		$this->assertNull( $content );
+	}
 }
