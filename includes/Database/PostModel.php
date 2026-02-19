@@ -91,6 +91,20 @@ abstract class PostModel {
 	}
 
 	/**
+	 * Check if a post with the given name (slug) exists.
+	 *
+	 * @param  string  $name  The post name/slug.
+	 * @return bool True if a post with this name exists.
+	 */
+	public static function name_exists( string $name ): bool {
+		return static::query()
+			->post_name__in( [ $name ] )
+			->fetch()
+			->records()
+			->isNotEmpty();
+	}
+
+	/**
 	 * Magic getter for field access.
 	 *
 	 * @param  string  $name  The field name.

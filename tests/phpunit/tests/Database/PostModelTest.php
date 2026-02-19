@@ -67,6 +67,27 @@ class PostModelTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that name_exists returns true for existing post slug.
+	 */
+	public function test_name_exists_returns_true_for_existing_slug(): void {
+		self::factory()->post->create(
+			[
+				'post_name'   => 'existing-slug',
+				'post_status' => 'publish',
+			]
+		);
+
+		$this->assertTrue( Post::name_exists( 'existing-slug' ) );
+	}
+
+	/**
+	 * Test that name_exists returns false for non-existent slug.
+	 */
+	public function test_name_exists_returns_false_for_non_existent_slug(): void {
+		$this->assertFalse( Post::name_exists( 'non-existent-slug-12345' ) );
+	}
+
+	/**
 	 * Test that query returns PostQueryBuilder.
 	 */
 	public function test_query_returns_post_query_builder(): void {
