@@ -20,7 +20,7 @@ vendor/
 ## AI Tools
 ############
 
-.claude/
+.claude/settings.local.json
 .clinerules
 .clinerules/
 .codex/

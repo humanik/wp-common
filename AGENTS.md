@@ -87,6 +87,7 @@ After making code changes, always run the following before considering the task 
 
 1. `composer phpcbf` — auto-fix coding standard issues
 2. `composer check` — verify phpcs, phpstan, and tests pass with zero errors (requires wp-env running via `npm start`)
+3. Update `AGENTS.md` if the changes affect architecture, commands, coding standards, or other documented details
 
 ## Coding Standards
 
