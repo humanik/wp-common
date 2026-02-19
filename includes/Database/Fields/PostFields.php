@@ -8,6 +8,9 @@ namespace Humanik\WP\Database\Fields;
  * Manages post fields with lazy loading and change tracking.
  *
  * @phpstan-type StoreType 'column'|'meta'|'acf_meta'
+ *
+ * @phpstan-type PostColumn 'title'|'content'|'excerpt'|'status'|'author'|'date'|'date_gmt'|'modified'|'modified_gmt'|'name'|'type'|'parent'|'menu_order'|'comment_count'|'post_password'|'post_title'|'post_content'|'post_excerpt'|'post_status'|'post_author'|'post_date'|'post_date_gmt'|'post_modified'|'post_modified_gmt'|'post_name'|'post_type'|'post_parent'
+ *
  * @phpstan-type FieldDefinition array{
  *     name: string,
  *     store_key: string,
@@ -17,7 +20,6 @@ namespace Humanik\WP\Database\Fields;
  * }
  */
 class PostFields {
-
 	/**
 	 * Field definitions indexed by name.
 	 *
@@ -61,6 +63,8 @@ class PostFields {
 	/**
 	 * Add a field definition.
 	 *
+	 * @phpstan-param non-empty-string $name
+	 * @phpstan-param non-empty-string $store_key
 	 * @phpstan-param StoreType $store_type
 	 *
 	 * @param  string  $name        The field name used for access.
@@ -69,7 +73,7 @@ class PostFields {
 	 * @param  bool    $single      For meta fields, whether to return single value.
 	 * @param  mixed   $default     Default value when field is empty/null.
 	 */
-	public function add(
+	protected function add(
 		string $name,
 		string $store_key,
 		string $store_type,
@@ -85,6 +89,12 @@ class PostFields {
 		];
 	}
 
+	/**
+	 * Add a field that maps to a post column.
+	 *
+	 * @phpstan-param non-empty-string $name
+	 * @phpstan-param PostColumn $store_key
+	 */
 	public function column( string $name, string $store_key, mixed $default = '' ): void {
 		$this->add(
 			name: $name,
@@ -94,6 +104,11 @@ class PostFields {
 		);
 	}
 
+	/**
+	 * Add a field that maps to post meta.
+	 *
+	 * @phpstan-param non-empty-string $name
+	 */
 	public function meta( string $name, mixed $default = '', bool $single = true ): void {
 		$this->add(
 			name: $name,
@@ -104,6 +119,12 @@ class PostFields {
 		);
 	}
 
+	/**
+	 * Add a field that maps to an ACF field.
+	 *
+	 * @phpstan-param non-empty-string $name
+	 * @phpstan-param non-empty-string|null $store_key
+	 */
 	public function acf( string $name, mixed $default = '', ?string $store_key = null ): void {
 		$this->add(
 			name: $name,
@@ -257,7 +278,7 @@ class PostFields {
 	/**
 	 * Save column changes via wp_insert_post or wp_update_post.
 	 *
-	 * @param  int|null  $post_id  The current post ID (null for new posts).
+	 * @param  ?int  $post_id  The current post ID (null for new posts).
 	 * @return int The post ID after save.
 	 *
 	 * @throws \RuntimeException If save fails.

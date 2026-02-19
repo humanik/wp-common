@@ -12,10 +12,9 @@ use Humanik\WP\Database\Fields\PostFields;
  * Provides a fluent interface for working with WordPress posts,
  * including field management, change tracking, and persistence.
  *
- * @property int|null $post_id The ID of the post, or null for new posts.
+ * @property ?int $post_id The ID of the post, or null for new posts.
  */
 abstract class PostModel {
-
 	/**
 	 * The post fields manager.
 	 *
@@ -126,7 +125,7 @@ abstract class PostModel {
 	 * @return bool True if field is defined.
 	 */
 	public function __isset( string $name ): bool {
-		if ( 'post_id' === $name || 'id' === $name ) {
+		if ( 'post_id' === $name ) {
 			return true;
 		}
 

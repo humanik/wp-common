@@ -13,16 +13,11 @@ use WP_UnitTestCase;
 class PostFieldsTest extends WP_UnitTestCase {
 
 	/**
-	 * Test that add registers a field definition.
+	 * Test that column registers a field definition.
 	 */
-	public function test_add_registers_field_definition(): void {
+	public function test_column_registers_field_definition(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$this->assertTrue( $fields->has( 'title' ) );
 	}
@@ -32,12 +27,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_has_returns_true_for_defined_field(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$this->assertTrue( $fields->has( 'title' ) );
 	}
@@ -56,12 +46,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_get_returns_default_for_new_post(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: 'Default Title',
-		);
+		$fields->column( name: 'title', store_key: 'post_title', default: 'Default Title' );
 
 		$this->assertSame( 'Default Title', $fields->get( 'title' ) );
 	}
@@ -71,12 +56,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_get_returns_pending_change(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'Changed Title' );
 
@@ -95,12 +75,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 		);
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$this->assertSame( 'DB Title', $fields->get( 'title' ) );
 	}
@@ -121,12 +96,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_set_tracks_column_change(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'New Title' );
 
@@ -139,12 +109,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_set_tracks_meta_change(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'custom_field',
-			store_key: 'custom_meta_key',
-			store_type: 'meta',
-			default: '',
-		);
+		$fields->meta( 'custom_field' );
 
 		$fields->set( 'custom_field', 'Meta Value' );
 
@@ -176,12 +141,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_is_dirty_true_after_column_change(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'Changed' );
 
@@ -193,12 +153,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_is_dirty_true_after_meta_change(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'meta_field',
-			store_key: 'meta_key',
-			store_type: 'meta',
-			default: '',
-		);
+		$fields->meta( 'meta_field' );
 
 		$fields->set( 'meta_field', 'Changed' );
 
@@ -210,12 +165,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_is_dirty_false_after_save(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'New Title' );
 		$this->assertTrue( $fields->is_dirty() );
@@ -229,12 +179,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_save_inserts_new_post(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'Inserted Post' );
 		$fields->save();
@@ -257,12 +202,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 		);
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$fields->set( 'title', 'Updated Title' );
 		$fields->save();
@@ -275,12 +215,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 	 */
 	public function test_save_sets_last_insert_id(): void {
 		$fields = new PostFields( null, 'post' );
-		$fields->add(
-			name: 'title',
-			store_key: 'post_title',
-			store_type: 'column',
-			default: '',
-		);
+		$fields->column( name: 'title', store_key: 'post_title' );
 
 		$this->assertNull( $fields->get_last_insert_id() );
 
@@ -297,15 +232,9 @@ class PostFieldsTest extends WP_UnitTestCase {
 		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'rating',
-			store_key: 'post_rating',
-			store_type: 'meta',
-			single: true,
-			default: 0,
-		);
+		$fields->meta( 'post_rating', default: 0 );
 
-		$fields->set( 'rating', 5 );
+		$fields->set( 'post_rating', 5 );
 		$fields->save();
 
 		$this->assertEquals( 5, \get_post_meta( $post_id, 'post_rating', true ) );
@@ -318,15 +247,9 @@ class PostFieldsTest extends WP_UnitTestCase {
 		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'tags',
-			store_key: 'custom_tags',
-			store_type: 'meta',
-			single: false,
-			default: [],
-		);
+		$fields->meta( 'custom_tags', default: [], single: false );
 
-		$fields->set( 'tags', [ 'tag1', 'tag2', 'tag3' ] );
+		$fields->set( 'custom_tags', [ 'tag1', 'tag2', 'tag3' ] );
 		$fields->save();
 
 		$meta_values = \get_post_meta( $post_id, 'custom_tags', false );
@@ -345,15 +268,9 @@ class PostFieldsTest extends WP_UnitTestCase {
 		\update_post_meta( $post_id, 'custom_key', 'Stored Value' );
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'custom',
-			store_key: 'custom_key',
-			store_type: 'meta',
-			single: true,
-			default: '',
-		);
+		$fields->meta( 'custom_key' );
 
-		$this->assertSame( 'Stored Value', $fields->get( 'custom' ) );
+		$this->assertSame( 'Stored Value', $fields->get( 'custom_key' ) );
 	}
 
 	/**
@@ -367,13 +284,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 		\add_post_meta( $post_id, 'items', 'old2' );
 
 		$fields = new PostFields( $post_id, 'post' );
-		$fields->add(
-			name: 'items',
-			store_key: 'items',
-			store_type: 'meta',
-			single: false,
-			default: [],
-		);
+		$fields->meta( 'items', default: [], single: false );
 
 		// Set new values.
 		$fields->set( 'items', [ 'new1', 'new2', 'new3' ] );

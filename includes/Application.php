@@ -136,6 +136,10 @@ class Application extends Container implements ApplicationContract {
 	public function environment( ...$environments ) {
 		$env = \wp_get_environment_type();
 
+		if ( empty( $environments ) ) {
+			return $env;
+		}
+
 		return \in_array( $env, $environments, true );
 	}
 
@@ -144,11 +148,11 @@ class Application extends Container implements ApplicationContract {
 	}
 
 	public function runningUnitTests(): bool {
-		return false;
+		return \defined( 'WP_TESTS_DOMAIN' );
 	}
 
 	public function hasDebugModeEnabled(): bool {
-		return false;
+		return \defined( 'WP_DEBUG' ) && \constant( 'WP_DEBUG' );
 	}
 
 	public function makeGlobal(): self {

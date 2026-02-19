@@ -12,16 +12,14 @@ use Humanik\WP\Database\Fields\PostFields;
  * @property string $content
  * @property string $excerpt
  * @property string $date
- * @property array<mixed> $data
- * @property list<string> $books
  */
 class Post extends PostModel {
 	protected function configure_fields( PostFields $fields ): PostFields {
-		$fields->column( name: 'name', store_key: 'post_name' );
-		$fields->column( name: 'title', store_key: 'post_title' );
-		$fields->column( name: 'content', store_key: 'post_content' );
-		$fields->column( name: 'excerpt', store_key: 'post_excerpt' );
-		$fields->column( name: 'date', store_key: 'post_date' );
+		$fields->column( 'name', store_key: 'post_name' );
+		$fields->column( 'title', store_key: 'post_title' );
+		$fields->column( 'content', store_key: 'post_content' );
+		$fields->column( 'excerpt', store_key: 'post_excerpt' );
+		$fields->column( 'date', store_key: 'post_date' );
 
 		return $fields;
 	}
