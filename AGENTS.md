@@ -34,10 +34,11 @@ composer test       # Run tests, same as 'npm test'
 ORM-like abstraction over WordPress posts with change tracking (unit-of-work pattern):
 
 - **PostModel**: Abstract base class for custom post type models. Extend and implement `get_post_type()` and `configure_fields()`.
-- **PostFields**: Manages field definitions and change tracking. Fields are registered via `column()`, `meta()`, or `acf()` methods. The `add()` method is protected — always use the specific registration methods.
+- **PostFields**: Manages field definitions and change tracking. Fields are registered via `column()`, `meta()`, `acf()`, or `taxonomy()` methods. The `add()` method is protected — always use the specific registration methods.
   - `column` - WP post table columns (post_title, post_content, etc.)
   - `meta` - Post meta via get/update_post_meta (supports single and multi-value)
   - `acf_meta` - ACF fields via get/update_field (supports custom store keys)
+  - `taxonomy` - Taxonomy terms via wp_get/set_post_terms (supports single and multi-value, returns names)
 - **PostQueryBuilder**: Fluent wrapper around WP_Query with type-safe methods. Uses `johnbillion/args` for typed query arguments. Generic `@template T of PostModel` enables typed results.
 - **PostQueryResult**: Wraps WP_Query results. `records()` returns a Laravel Collection, `loop()` returns a memory-efficient Generator.
 
@@ -49,6 +50,7 @@ class Movie extends PostModel {
         $fields->column( 'title', 'post_title' );
         $fields->meta( 'rating' );
         $fields->acf( 'poster_image' );
+        $fields->taxonomy( 'genres', store_key: 'genre' );
         return $fields;
     }
 

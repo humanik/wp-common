@@ -7,7 +7,7 @@ namespace Humanik\WP\Database\Fields;
 /**
  * Manages post fields with lazy loading and change tracking.
  *
- * @phpstan-type StoreType 'column'|'meta'|'acf_meta'
+ * @phpstan-type StoreType 'column'|'meta'|'acf_meta'|'taxonomy'
  *
  * @phpstan-type PostColumn 'title'|'content'|'excerpt'|'status'|'author'|'date'|'date_gmt'|'modified'|'modified_gmt'|'name'|'type'|'parent'|'menu_order'|'comment_count'|'post_password'|'post_title'|'post_content'|'post_excerpt'|'post_status'|'post_author'|'post_date'|'post_date_gmt'|'post_modified'|'post_modified_gmt'|'post_name'|'post_type'|'post_parent'
  *
@@ -47,6 +47,13 @@ class PostFields {
 	 * @var  array<string, mixed>
 	 */
 	private array $acf_changes = [];
+
+	/**
+	 * Pending taxonomy changes.
+	 *
+	 * @var  array<string, mixed>
+	 */
+	private array $taxonomy_changes = [];
 
 	/**
 	 * ID of newly created post.
@@ -135,6 +142,26 @@ class PostFields {
 	}
 
 	/**
+	 * Add a field that maps to a taxonomy.
+	 *
+	 * @phpstan-param non-empty-string $name
+	 * @phpstan-param non-empty-string|null $store_key
+	 *
+	 * @param  string       $name       The field name used for access.
+	 * @param  bool         $single     Whether to return a single term ID or an array.
+	 * @param  string|null  $store_key  The taxonomy name (defaults to $name).
+	 */
+	public function taxonomy( string $name, bool $single = false, ?string $store_key = null ): void {
+		$this->add(
+			name: $name,
+			store_key: $store_key ?? $name,
+			store_type: 'taxonomy',
+			single: $single,
+			default: $single ? null : [],
+		);
+	}
+
+	/**
 	 * Get a field value.
 	 *
 	 * @param  string  $name  The field name.
@@ -164,6 +191,10 @@ class PostFields {
 			return $this->acf_changes[ $store_key ];
 		}
 
+		if ( 'taxonomy' === $definition['store_type'] && \array_key_exists( $store_key, $this->taxonomy_changes ) ) {
+			return $this->taxonomy_changes[ $store_key ];
+		}
+
 		return $this->load_value( $definition );
 	}
 
@@ -185,9 +216,10 @@ class PostFields {
 		$store_key  = $definition['store_key'];
 
 		match ( $definition['store_type'] ) {
-			'column'   => $this->column_changes[ $store_key ] = $value,
-			'meta'     => $this->meta_changes[ $store_key ]   = $value,
-			'acf_meta' => $this->acf_changes[ $store_key ]    = $value,
+			'column'   => $this->column_changes[ $store_key ]   = $value,
+			'meta'     => $this->meta_changes[ $store_key ]     = $value,
+			'acf_meta' => $this->acf_changes[ $store_key ]      = $value,
+			'taxonomy' => $this->taxonomy_changes[ $store_key ] = $value,
 		};
 	}
 
@@ -209,7 +241,8 @@ class PostFields {
 	public function is_dirty(): bool {
 		return ! empty( $this->column_changes )
 			|| ! empty( $this->meta_changes )
-			|| ! empty( $this->acf_changes );
+			|| ! empty( $this->acf_changes )
+			|| ! empty( $this->taxonomy_changes );
 	}
 
 	/**
@@ -233,10 +266,16 @@ class PostFields {
 			$this->save_acf_meta( $this->post_id );
 		}
 
+		// Handle taxonomy changes.
+		if ( ! empty( $this->taxonomy_changes ) && ! \is_null( $this->post_id ) ) {
+			$this->save_taxonomy( $this->post_id );
+		}
+
 		// Clear all pending changes.
-		$this->column_changes = [];
-		$this->meta_changes   = [];
-		$this->acf_changes    = [];
+		$this->column_changes   = [];
+		$this->meta_changes     = [];
+		$this->acf_changes      = [];
+		$this->taxonomy_changes = [];
 	}
 
 	/**
@@ -264,12 +303,18 @@ class PostFields {
 		$value = match ( $definition['store_type'] ) {
 			'column'   => \get_post_field( $definition['store_key'], $this->post_id, 'raw' ),
 			'meta'     => \get_post_meta( $this->post_id, $definition['store_key'], $definition['single'] ),
-			'acf_meta' => \get_field( $definition['store_key'], $this->post_id )
+			'acf_meta' => \get_field( $definition['store_key'], $this->post_id ),
+			'taxonomy' => \wp_get_post_terms( $this->post_id, $definition['store_key'], [ 'fields' => 'names' ] ),
 		};
 
 		// Handle empty values - return default.
 		if ( '' === $value || ( \is_array( $value ) && empty( $value ) ) ) {
 			return $definition['default'];
+		}
+
+		// For single taxonomy fields, return just the first term ID.
+		if ( 'taxonomy' === $definition['store_type'] && $definition['single'] ) {
+			return \is_array( $value ) ? $value[0] : $value;
 		}
 
 		return $value;
@@ -348,6 +393,24 @@ class PostFields {
 	private function save_acf_meta( int $post_id ): void {
 		foreach ( $this->acf_changes as $key => $value ) {
 			\update_field( $key, $value, $post_id );
+		}
+	}
+
+	/**
+	 * Save taxonomy changes.
+	 *
+	 * @param  int  $post_id  The post ID.
+	 *
+	 * @throws \RuntimeException If setting terms fails.
+	 */
+	private function save_taxonomy( int $post_id ): void {
+		foreach ( $this->taxonomy_changes as $taxonomy => $terms ) {
+			$result = \wp_set_post_terms( $post_id, $terms, $taxonomy );
+
+			if ( \is_wp_error( $result ) ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message, not HTML output.
+				throw new \RuntimeException( $result->get_error_message() );
+			}
 		}
 	}
 

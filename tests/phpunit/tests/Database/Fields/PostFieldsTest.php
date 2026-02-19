@@ -501,4 +501,182 @@ class PostFieldsTest extends WP_UnitTestCase {
 
 		$this->assertSame( [ 'default.jpg' ], $fields->get( 'gallery' ) );
 	}
+
+	/**
+	 * Test that taxonomy registers a field definition.
+	 */
+	public function test_taxonomy_registers_field_definition(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'categories', store_key: 'category' );
+
+		$this->assertTrue( $fields->has( 'categories' ) );
+	}
+
+	/**
+	 * Test that taxonomy uses name as store_key by default.
+	 */
+	public function test_taxonomy_uses_name_as_store_key_by_default(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'post_tag' );
+
+		$fields->set( 'post_tag', [ 'tag1', 'tag2' ] );
+
+		$this->assertSame( [ 'tag1', 'tag2' ], $fields->get( 'post_tag' ) );
+	}
+
+	/**
+	 * Test that taxonomy returns default empty array for new post.
+	 */
+	public function test_taxonomy_returns_default_for_new_post(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'categories', store_key: 'category' );
+
+		$this->assertSame( [], $fields->get( 'categories' ) );
+	}
+
+	/**
+	 * Test that single taxonomy returns null default for new post.
+	 */
+	public function test_single_taxonomy_returns_null_default_for_new_post(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'primary_category', single: true, store_key: 'category' );
+
+		$this->assertNull( $fields->get( 'primary_category' ) );
+	}
+
+	/**
+	 * Test that get returns pending taxonomy change.
+	 */
+	public function test_get_returns_pending_taxonomy_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'categories', store_key: 'category' );
+
+		$fields->set( 'categories', [ 'PHP', 'WordPress' ] );
+
+		$this->assertSame( [ 'PHP', 'WordPress' ], $fields->get( 'categories' ) );
+	}
+
+	/**
+	 * Test that set tracks taxonomy change.
+	 */
+	public function test_set_tracks_taxonomy_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'categories', store_key: 'category' );
+
+		$fields->set( 'categories', [ 'PHP' ] );
+
+		$this->assertTrue( $fields->is_dirty() );
+	}
+
+	/**
+	 * Test that is_dirty returns true after taxonomy change.
+	 */
+	public function test_is_dirty_true_after_taxonomy_change(): void {
+		$fields = new PostFields( null, 'post' );
+		$fields->taxonomy( 'categories', store_key: 'category' );
+
+		$fields->set( 'categories', [ 'PHP' ] );
+
+		$this->assertTrue( $fields->is_dirty() );
+	}
+
+	/**
+	 * Test that is_dirty returns false after save with taxonomy changes.
+	 */
+	public function test_is_dirty_false_after_save_with_taxonomy_changes(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'tags', store_key: 'post_tag' );
+
+		$fields->set( 'tags', [ 'php', 'wordpress' ] );
+		$this->assertTrue( $fields->is_dirty() );
+
+		$fields->save();
+		$this->assertFalse( $fields->is_dirty() );
+	}
+
+	/**
+	 * Test that save sets taxonomy terms on post.
+	 */
+	public function test_save_sets_taxonomy_terms(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'tags', store_key: 'post_tag' );
+
+		$fields->set( 'tags', [ 'php', 'wordpress' ] );
+		$fields->save();
+
+		$terms = \wp_get_post_terms( $post_id, 'post_tag', [ 'fields' => 'names' ] );
+
+		$this->assertCount( 2, $terms );
+		$this->assertContains( 'php', $terms );
+		$this->assertContains( 'wordpress', $terms );
+	}
+
+	/**
+	 * Test that get loads taxonomy terms from database.
+	 */
+	public function test_get_loads_taxonomy_from_database(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\wp_set_post_terms( $post_id, [ 'php', 'wordpress' ], 'post_tag' );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'tags', store_key: 'post_tag' );
+
+		$result = $fields->get( 'tags' );
+
+		$this->assertIsArray( $result );
+		$this->assertCount( 2, $result );
+		$this->assertContains( 'php', $result );
+		$this->assertContains( 'wordpress', $result );
+	}
+
+	/**
+	 * Test that single taxonomy returns first term name from database.
+	 */
+	public function test_single_taxonomy_returns_first_term_from_database(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\wp_set_post_terms( $post_id, [ 'php' ], 'post_tag' );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'primary_tag', single: true, store_key: 'post_tag' );
+
+		$result = $fields->get( 'primary_tag' );
+
+		$this->assertSame( 'php', $result );
+	}
+
+	/**
+	 * Test that taxonomy returns default when post has no terms.
+	 */
+	public function test_taxonomy_returns_default_when_no_terms(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'tags', store_key: 'post_tag' );
+
+		$this->assertSame( [], $fields->get( 'tags' ) );
+	}
+
+	/**
+	 * Test that save replaces existing taxonomy terms.
+	 */
+	public function test_save_replaces_existing_taxonomy_terms(): void {
+		$post_id = self::factory()->post->create( [ 'post_status' => 'publish' ] );
+		\wp_set_post_terms( $post_id, [ 'old-tag' ], 'post_tag' );
+
+		$fields = new PostFields( $post_id, 'post' );
+		$fields->taxonomy( 'tags', store_key: 'post_tag' );
+
+		$fields->set( 'tags', [ 'new-tag' ] );
+		$fields->save();
+
+		$terms = \wp_get_post_terms( $post_id, 'post_tag', [ 'fields' => 'names' ] );
+
+		$this->assertCount( 1, $terms );
+		$this->assertContains( 'new-tag', $terms );
+		$this->assertNotContains( 'old-tag', $terms );
+	}
 }
