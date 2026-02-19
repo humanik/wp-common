@@ -7,6 +7,10 @@ namespace Humanik\WP\PHPUnit\Tests\Support;
 use Humanik\WP\Support\Stdin;
 use WP_UnitTestCase;
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
 /**
  * Tests for the Stdin helper.
  */

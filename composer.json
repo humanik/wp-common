@@ -46,11 +46,6 @@
 		}
 	},
 	"scripts": {
-		"check": [
-			"@phpcs",
-			"@phpstan",
-			"@test"
-		],
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",
 		"phpstan": "phpstan analyze --memory-limit=1G",

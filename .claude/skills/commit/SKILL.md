@@ -4,10 +4,11 @@ Create a commit with a meaningful message.
 
 ## Steps
 
-1. Run `composer check` to verify phpcs, phpstan, and tests pass. If there are failures, stop and report all errors to the user.
-2. Run `git diff --staged` and `git diff` to see all changes (staged and unstaged).
-3. Run `git status` to see untracked and modified files.
-4. Stage all relevant changed files using `git add` with specific file paths (do NOT use `git add -A` or `git add .`). Do not stage files that contain secrets or credentials.
-5. Analyze the diff and write a concise commit message that describes **what** changed and **why**. Use imperative mood (e.g. "Add ...", "Fix ...", "Update ..."). Keep the subject line under 72 characters. Do not add 'Co-Authored-By: ...'
-6. Create the commit.
-7. Report the commit message to the user.
+1. Run `composer phpcbf` to auto-fix coding standard issues.
+2. Run `composer phpcs`, `composer phpstan`, and `composer test`. Collect all errors from all three commands. If there are any errors or failures, report all of them to the user and do not proceed with the commit.
+5. Run `git diff --staged` and `git diff` to see all changes (staged and unstaged).
+6. Run `git status` to see untracked and modified files.
+7. Stage all relevant changed files using `git add` with specific file paths (do NOT use `git add -A` or `git add .`). Do not stage files that contain secrets or credentials.
+8. Analyze the diff and write a concise commit message that describes **what** changed and **why**. Use imperative mood (e.g. "Add ...", "Fix ...", "Update ..."). Keep the subject line under 72 characters. Do not add 'Co-Authored-By: ...'
+9. Create the commit.
+10. Report the commit message to the user.

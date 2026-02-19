@@ -612,6 +612,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 
 		$this->assertCount( 2, $terms );
 		$this->assertContains( 'php', $terms );
+		// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- term name, not the project name.
 		$this->assertContains( 'wordpress', $terms );
 	}
 
@@ -630,6 +631,7 @@ class PostFieldsTest extends WP_UnitTestCase {
 		$this->assertIsArray( $result );
 		$this->assertCount( 2, $result );
 		$this->assertContains( 'php', $result );
+		// phpcs:ignore WordPress.WP.CapitalPDangit.MisspelledInText -- term name, not the project name.
 		$this->assertContains( 'wordpress', $result );
 	}
 

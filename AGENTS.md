@@ -23,7 +23,6 @@ npm stop                     # Stop wp-env
 composer phpcs      # Check coding standards
 composer phpcbf     # Auto-fix coding standard issues
 composer phpstan    # Run static analysis (max level)
-composer check      # Run phpcs, phpstan, and tests
 composer test       # Run tests, same as 'npm test'
 ```
 
@@ -86,8 +85,10 @@ Laravel-compatible DI container implementing `Illuminate\Contracts\Foundation\Ap
 After making code changes, always run the following before considering the task complete:
 
 1. `composer phpcbf` — auto-fix coding standard issues
-2. `composer check` — verify phpcs, phpstan, and tests pass with zero errors (requires wp-env running via `npm start`)
-3. Update `AGENTS.md` if the changes affect architecture, commands, coding standards, or other documented details
+2. `composer phpcs` — check coding standards
+3. `composer phpstan` — run static analysis
+4. `composer test` — run tests (requires wp-env running via `npm start`)
+5. Update `AGENTS.md` if the changes affect architecture, commands, coding standards, or other documented details
 
 ## Coding Standards
 
