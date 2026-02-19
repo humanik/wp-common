@@ -23,7 +23,7 @@ npm stop                     # Stop wp-env
 composer phpcs      # Check coding standards
 composer phpcbf     # Auto-fix coding standard issues
 composer phpstan    # Run static analysis (max level)
-composer lint       # Run both phpcs and phpstan
+composer check      # Run phpcs, phpstan, and tests
 composer test       # Run tests, same as 'npm test'
 ```
 
@@ -80,6 +80,13 @@ Laravel-compatible DI container implementing `Illuminate\Contracts\Foundation\Ap
 - **ServiceProvider**: Abstract base extending Laravel's ServiceProvider with typed `$app` property (`Humanik\WP\Application`).
 - **PostType**: Static helper for controlling duplicate slug behavior per post type (`allow_duplicate_names()` / `disallow_duplicate_names()`).
 - **Stdin**: CLI input helpers — lazy line reading via `LazyCollection`, non-blocking content detection, and full content reading.
+
+## Workflow
+
+After making code changes, always run the following before considering the task complete:
+
+1. `composer phpcbf` — auto-fix coding standard issues
+2. `composer check` — verify phpcs, phpstan, and tests pass with zero errors (requires wp-env running via `npm start`)
 
 ## Coding Standards
 

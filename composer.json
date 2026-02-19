@@ -46,9 +46,10 @@
 		}
 	},
 	"scripts": {
-		"lint": [
+		"check": [
 			"@phpcs",
-			"@phpstan"
+			"@phpstan",
+			"@test"
 		],
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",

@@ -51,7 +51,7 @@ class PostFields {
 	/**
 	 * Pending taxonomy changes.
 	 *
-	 * @var  array<string, mixed>
+	 * @var  array<string, array<int, string>|string>
 	 */
 	private array $taxonomy_changes = [];
 
@@ -215,12 +215,16 @@ class PostFields {
 		$definition = $this->definitions[ $name ];
 		$store_key  = $definition['store_key'];
 
-		match ( $definition['store_type'] ) {
-			'column'   => $this->column_changes[ $store_key ]   = $value,
-			'meta'     => $this->meta_changes[ $store_key ]     = $value,
-			'acf_meta' => $this->acf_changes[ $store_key ]      = $value,
-			'taxonomy' => $this->taxonomy_changes[ $store_key ] = $value,
-		};
+		if ( 'taxonomy' === $definition['store_type'] ) {
+			/** @var array<int, string>|string $value */
+			$this->taxonomy_changes[ $store_key ] = $value;
+		} else {
+			match ( $definition['store_type'] ) {
+				'column'   => $this->column_changes[ $store_key ] = $value,
+				'meta'     => $this->meta_changes[ $store_key ]   = $value,
+				'acf_meta' => $this->acf_changes[ $store_key ]    = $value,
+			};
+		}
 	}
 
 	/**

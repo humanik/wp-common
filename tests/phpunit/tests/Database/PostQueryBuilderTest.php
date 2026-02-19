@@ -547,6 +547,123 @@ class PostQueryBuilderTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test date_before parameter with default column.
+	 */
+	public function test_date_before_parameter(): void {
+		$builder = new PostQueryBuilder( Post::class );
+		$builder->date_before( '2024-01-01' );
+		$result = $builder->fetch();
+
+		$this->assertSame(
+			[
+				[
+					'before' => '2024-01-01',
+					'column' => 'post_date',
+				],
+			],
+			$result->wp_query->query_vars['date_query']
+		);
+	}
+
+	/**
+	 * Test date_before parameter with custom column.
+	 */
+	public function test_date_before_with_custom_column(): void {
+		$builder = new PostQueryBuilder( Post::class );
+		$builder->date_before( '2024-06-15', 'post_modified' );
+		$result = $builder->fetch();
+
+		$this->assertSame(
+			[
+				[
+					'before' => '2024-06-15',
+					'column' => 'post_modified',
+				],
+			],
+			$result->wp_query->query_vars['date_query']
+		);
+	}
+
+	/**
+	 * Test date_after parameter with default column.
+	 */
+	public function test_date_after_parameter(): void {
+		$builder = new PostQueryBuilder( Post::class );
+		$builder->date_after( '2024-01-01' );
+		$result = $builder->fetch();
+
+		$this->assertSame(
+			[
+				[
+					'after'  => '2024-01-01',
+					'column' => 'post_date',
+				],
+			],
+			$result->wp_query->query_vars['date_query']
+		);
+	}
+
+	/**
+	 * Test date_after parameter with custom column.
+	 */
+	public function test_date_after_with_custom_column(): void {
+		$builder = new PostQueryBuilder( Post::class );
+		$builder->date_after( '2024-06-15', 'post_date_gmt' );
+		$result = $builder->fetch();
+
+		$this->assertSame(
+			[
+				[
+					'after'  => '2024-06-15',
+					'column' => 'post_date_gmt',
+				],
+			],
+			$result->wp_query->query_vars['date_query']
+		);
+	}
+
+	/**
+	 * Test date_before and date_after chained together.
+	 */
+	public function test_date_before_and_after_chained(): void {
+		$builder = new PostQueryBuilder( Post::class );
+		$builder->date_after( '2024-01-01' )->date_before( '2024-12-31' );
+		$result = $builder->fetch();
+
+		$this->assertSame(
+			[
+				[
+					'after'  => '2024-01-01',
+					'column' => 'post_date',
+				],
+				[
+					'before' => '2024-12-31',
+					'column' => 'post_date',
+				],
+			],
+			$result->wp_query->query_vars['date_query']
+		);
+	}
+
+	/**
+	 * Test date_before fluent interface returns same instance.
+	 */
+	public function test_date_before_fluent_interface(): void {
+		$builder = new PostQueryBuilder( Post::class );
+
+		$this->assertSame( $builder, $builder->date_before( '2024-01-01' ) );
+	}
+
+	/**
+	 * Test date_after fluent interface returns same instance.
+	 */
+	public function test_date_after_fluent_interface(): void {
+		$builder = new PostQueryBuilder( Post::class );
+
+		$this->assertSame( $builder, $builder->date_after( '2024-01-01' ) );
+	}
+
+	/**
 	 * Test meta_compare parameter.
 	 */
 	public function test_meta_compare_parameter(): void {

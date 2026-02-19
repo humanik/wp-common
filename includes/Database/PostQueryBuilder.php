@@ -482,6 +482,42 @@ class PostQueryBuilder {
 	}
 
 	/**
+	 * Filter posts before a given date.
+	 *
+	 * @param  string  $date  Date string (e.g. '2024-01-01', '2024-01-01 12:00:00').
+	 * @param  string  $column  Column to filter by.
+	 *
+	 * @phpstan-param 'post_date'|'post_date_gmt'|'post_modified'|'post_modified_gmt' $column
+	 */
+	public function date_before( string $date, string $column = 'post_date' ): static {
+		$clause         = new \Args\DateQuery\Clause();
+		$clause->before = $date;
+		$clause->column = $column;
+
+		$this->args->date_query->addClause( $clause );
+
+		return $this;
+	}
+
+	/**
+	 * Filter posts after a given date.
+	 *
+	 * @param  string  $date  Date string (e.g. '2024-01-01', '2024-01-01 12:00:00').
+	 * @param  string  $column  Column to filter by.
+	 *
+	 * @phpstan-param 'post_date'|'post_date_gmt'|'post_modified'|'post_modified_gmt' $column
+	 */
+	public function date_after( string $date, string $column = 'post_date' ): static {
+		$clause         = new \Args\DateQuery\Clause();
+		$clause->after  = $date;
+		$clause->column = $column;
+
+		$this->args->date_query->addClause( $clause );
+
+		return $this;
+	}
+
+	/**
 	 * Set meta comparison operator.
 	 *
 	 * @phpstan-param '='|'!='|'>'|'>='|'<'|'<='|'LIKE'|'NOT LIKE'|'IN'|'NOT IN'|'BETWEEN'|'NOT BETWEEN'|'EXISTS'|'NOT EXISTS'|'REGEXP'|'NOT REGEXP'|'RLIKE' $compare Comparison operator.
