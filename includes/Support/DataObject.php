@@ -7,24 +7,56 @@ namespace Humanik\WP\Support;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
+use CuyZ\Valinor\Normalizer\Format;
+use CuyZ\Valinor\Normalizer\Normalizer;
+use CuyZ\Valinor\NormalizerBuilder;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
-abstract class DataObject {
+/**
+ * @implements Arrayable<string,mixed>
+ */
+abstract class DataObject implements Arrayable, Jsonable {
 	private static ?TreeMapper $mapper = null;
+
+	/** @var Normalizer<array<mixed>|scalar|null>|null */
+	private static ?Normalizer $normalizer = null;
 
 	/**
 	 * @param array<mixed> $data
 	 */
-	public static function from_array( array $data ): static {
+	public static function fromArray( array $data ): static {
 		return self::get_mapper()->map( static::class, $data );
 	}
 
-	public static function from_json( string $json ): static {
+	public static function fromJson( string $json ): static {
 		return self::get_mapper()->map( static::class, Source::json( $json ) );
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public function toArray(): array {
+		/** @var array<string,mixed> */
+		return (array) self::get_normalizer()->normalize( $this );
+	}
+
+	public function toJson( $options = 0 ): string {
+		return (string) \wp_json_encode( $this->toArray(), $options );
 	}
 
 	private static function get_mapper(): TreeMapper {
 		self::$mapper ??= ( new MapperBuilder() )->mapper();
 
 		return self::$mapper;
+	}
+
+	/**
+	 * @return Normalizer<array<mixed>|scalar|null>
+	 */
+	private static function get_normalizer(): Normalizer {
+		self::$normalizer ??= ( new NormalizerBuilder() )->normalizer( Format::array() );
+
+		return self::$normalizer;
 	}
 }
