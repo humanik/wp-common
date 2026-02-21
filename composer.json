@@ -4,7 +4,10 @@
 	"autoload": {
 		"psr-4": {
 			"Humanik\\WP\\": "includes/"
-		}
+		},
+		"files": [
+			"includes/helpers.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
@@ -18,7 +21,8 @@
 		"ext-json": "*",
 		"illuminate/support": "^12.48",
 		"illuminate/container": "^12.48",
-		"johnbillion/args": "^2.3"
+		"johnbillion/args": "^2.3",
+		"cuyz/valinor": "^2.3"
 	},
 	"require-dev": {
 		"automattic/vipwpcs": "^3.0",

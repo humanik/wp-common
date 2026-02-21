@@ -38,7 +38,7 @@ abstract class PostModel {
 	/**
 	 * Get the post type slug.
 	 *
-	 * @return string The post type.
+	 * @return lowercase-string&non-empty-string The post type.
 	 */
 	abstract public static function get_post_type(): string;
 
