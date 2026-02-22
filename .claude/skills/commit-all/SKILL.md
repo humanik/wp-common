@@ -1,4 +1,9 @@
-# Commit
+---
+name: commit-all
+description: Lint, test, stage all changes, and commit
+---
+
+# Commit All
 
 Create a commit with a meaningful message.
 
