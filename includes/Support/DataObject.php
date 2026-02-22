@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Humanik\WP\Support;
 
-use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\Mapper\TreeMapper;
 use CuyZ\Valinor\MapperBuilder;
 use CuyZ\Valinor\Normalizer\Format;
@@ -30,7 +29,14 @@ abstract class DataObject implements Arrayable, Jsonable {
 	 * @param array<mixed> $data
 	 */
 	public static function fromArray( array $data ): static {
-		return self::get_mapper()->map( static::class, $data );
+		return static::map( static::class, $data );
+	}
+
+	/**
+	 * @param class-string<static> $signature
+	 */
+	protected static function map( string $signature, mixed $data ): static {
+		return self::get_mapper()->map( $signature, $data );
 	}
 
 	/**
@@ -46,7 +52,11 @@ abstract class DataObject implements Arrayable, Jsonable {
 	}
 
 	public static function fromJson( string $json ): static {
-		return self::get_mapper()->map( static::class, Source::json( $json ) );
+		$array = \json_decode( $json, true, 512, JSON_THROW_ON_ERROR );
+
+		Assert::isArray( $array );
+
+		return self::fromArray( $array );
 	}
 
 	/**

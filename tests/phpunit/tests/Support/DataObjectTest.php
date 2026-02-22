@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Humanik\WP\PHPUnit\Tests\Support;
 
 use CuyZ\Valinor\Mapper\MappingError;
-use CuyZ\Valinor\Mapper\Source\Exception\InvalidJson;
 use Illuminate\Support\Collection;
+use JsonException;
 use WP_UnitTestCase;
 
 /**
@@ -184,7 +184,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	 * Test that from_json throws on malformed JSON.
 	 */
 	public function test_from_json_with_invalid_json_throws(): void {
-		$this->expectException( InvalidJson::class );
+		$this->expectException( JsonException::class );
 
 		SampleData::fromJson( '{invalid json' );
 	}
