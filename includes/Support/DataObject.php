@@ -12,6 +12,8 @@ use CuyZ\Valinor\Normalizer\Normalizer;
 use CuyZ\Valinor\NormalizerBuilder;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * @implements Arrayable<string,mixed>
@@ -27,6 +29,18 @@ abstract class DataObject implements Arrayable, Jsonable {
 	 */
 	public static function fromArray( array $data ): static {
 		return self::get_mapper()->map( static::class, $data );
+	}
+
+	/**
+	 * @param array<mixed> $items
+	 * @return Collection<int,static>
+	 */
+	public static function collect( array $items ): Collection {
+		Assert::allIsArray( $items );
+
+		return Collection::make( $items )
+			->map( static::fromArray( ... ) )
+			->values();
 	}
 
 	public static function fromJson( string $json ): static {

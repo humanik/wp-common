@@ -6,6 +6,7 @@ namespace Humanik\WP\PHPUnit\Tests\Support;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Exception\InvalidJson;
+use Illuminate\Support\Collection;
 use WP_UnitTestCase;
 
 /**
@@ -55,8 +56,9 @@ class DataObjectTest extends WP_UnitTestCase {
 
 		$this->assertSame(
 			[
-				'name' => 'Charlie',
-				'age'  => 40,
+				'name'    => 'Charlie',
+				'age'     => 40,
+				'surname' => null,
 			],
 			$array
 		);
@@ -74,7 +76,7 @@ class DataObjectTest extends WP_UnitTestCase {
 		);
 		$json = $data->toJson();
 
-		$this->assertSame( '{"name":"Dana","age":35}', $json );
+		$this->assertSame( '{"name":"Dana","age":35,"surname":null}', $json );
 	}
 
 	/**
@@ -92,8 +94,9 @@ class DataObjectTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( "\n", $json );
 		$this->assertSame(
 			[
-				'name' => 'Eve',
-				'age'  => 28,
+				'name'    => 'Eve',
+				'age'     => 28,
+				'surname' => null,
 			],
 			json_decode( $json, true ),
 		);
@@ -109,7 +112,14 @@ class DataObjectTest extends WP_UnitTestCase {
 		];
 		$output = SampleData::fromArray( $input )->toArray();
 
-		$this->assertSame( $input, $output );
+		$this->assertSame(
+			[
+				'name'    => 'Frank',
+				'age'     => 50,
+				'surname' => null,
+			],
+			$output
+		);
 	}
 
 	/**
@@ -119,7 +129,46 @@ class DataObjectTest extends WP_UnitTestCase {
 		$json   = '{"name":"Grace","age":22}';
 		$output = SampleData::fromJson( $json )->toJson();
 
-		$this->assertSame( $json, $output );
+		$this->assertSame( '{"name":"Grace","age":22,"surname":null}', $output );
+	}
+
+	/**
+	 * Test that collect returns a Collection of typed instances.
+	 */
+	public function test_collect_returns_collection_of_instances(): void {
+		$items = [
+			[
+				'name' => 'Alice',
+				'age'  => 30,
+			],
+			[
+				'name' => 'Bob',
+				'age'  => 25,
+			],
+			[
+				'name' => 'Charlie',
+				'age'  => 40,
+			],
+		];
+
+		$collection = SampleData::collect( $items );
+
+		$this->assertInstanceOf( Collection::class, $collection );
+		$this->assertCount( 3, $collection );
+		$this->assertContainsOnlyInstancesOf( SampleData::class, $collection );
+		$this->assertSame( 'Alice', $collection[0]->name );
+		$this->assertSame( 25, $collection[1]->age );
+		$this->assertSame( 'Charlie', $collection[2]->name );
+	}
+
+	/**
+	 * Test that collect returns an empty Collection for empty input.
+	 */
+	public function test_collect_with_empty_array_returns_empty_collection(): void {
+		$collection = SampleData::collect( [] );
+
+		$this->assertInstanceOf( Collection::class, $collection );
+		$this->assertTrue( $collection->isEmpty() );
 	}
 
 	/**
@@ -146,8 +195,9 @@ class DataObjectTest extends WP_UnitTestCase {
 	public function test_nested_data_object_round_trip(): void {
 		$input = [
 			'child' => [
-				'name' => 'Nested',
-				'age'  => 10,
+				'name'    => 'Nested',
+				'age'     => 10,
+				'surname' => 'Doe',
 			],
 			'label' => 'wrapper',
 		];
