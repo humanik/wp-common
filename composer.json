@@ -22,7 +22,8 @@
 		"illuminate/support": "^12.48",
 		"illuminate/container": "^12.48",
 		"johnbillion/args": "^2.3",
-		"cuyz/valinor": "^2.3"
+		"cuyz/valinor": "^2.3",
+		"webmozart/assert": "^2.1"
 	},
 	"require-dev": {
 		"automattic/vipwpcs": "^3.0",
