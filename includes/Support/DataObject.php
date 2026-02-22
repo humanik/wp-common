@@ -15,6 +15,8 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Collection;
 use Webmozart\Assert\Assert;
 
+use function Humanik\WP\make;
+
 /**
  * @implements Arrayable<string,mixed>
  */
@@ -60,7 +62,7 @@ abstract class DataObject implements Arrayable, Jsonable {
 	}
 
 	private static function get_mapper(): TreeMapper {
-		self::$mapper ??= ( new MapperBuilder() )->mapper();
+		self::$mapper ??= make( MapperBuilder::class )->mapper();
 
 		return self::$mapper;
 	}
@@ -69,7 +71,7 @@ abstract class DataObject implements Arrayable, Jsonable {
 	 * @return Normalizer<array<mixed>|scalar|null>
 	 */
 	private static function get_normalizer(): Normalizer {
-		self::$normalizer ??= ( new NormalizerBuilder() )->normalizer( Format::array() );
+		self::$normalizer ??= make( NormalizerBuilder::class )->normalizer( Format::array() );
 
 		return self::$normalizer;
 	}
