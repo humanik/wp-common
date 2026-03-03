@@ -70,7 +70,24 @@ class JsonSchema {
 			return [];
 		}
 
-		return $this->parse_type( $type, $param );
+		$schema = $this->parse_type( $type, $param );
+
+		$attributes = $param->getAttributes( Field::class );
+		if ( $attributes ) {
+			$field = $attributes[0]->newInstance();
+
+			$schema['title'] = $field->title;
+
+			if ( null !== $field->description ) {
+				$schema['description'] = $field->description;
+			}
+		}
+
+		if ( $param->isDefaultValueAvailable() ) {
+			$schema['default'] = $param->getDefaultValue();
+		}
+
+		return $schema;
 	}
 
 	/**

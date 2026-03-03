@@ -21,7 +21,10 @@ class JsonSchemaTest extends WP_UnitTestCase {
 				'properties' => [
 					'name'    => [ 'type' => 'string' ],
 					'age'     => [ 'type' => 'integer' ],
-					'surname' => [ 'type' => [ 'string', 'null' ] ],
+					'surname' => [
+						'type'    => [ 'string', 'null' ],
+						'default' => null,
+					],
 				],
 				'required'   => [ 'name', 'age' ],
 			],
@@ -42,7 +45,10 @@ class JsonSchemaTest extends WP_UnitTestCase {
 						'properties' => [
 							'name'    => [ 'type' => 'string' ],
 							'age'     => [ 'type' => 'integer' ],
-							'surname' => [ 'type' => [ 'string', 'null' ] ],
+							'surname' => [
+								'type'    => [ 'string', 'null' ],
+								'default' => null,
+							],
 						],
 						'required'   => [ 'name', 'age' ],
 					],
@@ -70,7 +76,10 @@ class JsonSchemaTest extends WP_UnitTestCase {
 							'properties' => [
 								'name'    => [ 'type' => 'string' ],
 								'age'     => [ 'type' => 'integer' ],
-								'surname' => [ 'type' => [ 'string', 'null' ] ],
+								'surname' => [
+									'type'    => [ 'string', 'null' ],
+									'default' => null,
+								],
 							],
 							'required'   => [ 'name', 'age' ],
 						],
@@ -79,6 +88,34 @@ class JsonSchemaTest extends WP_UnitTestCase {
 				'required'   => [ 'name', 'items' ],
 			],
 			SampleCollection::jsonSchema()
+		);
+	}
+
+	/**
+	 * Test Field attribute adds title and description to schema.
+	 */
+	public function test_field_attribute(): void {
+		$this->assertSame(
+			[
+				'type'       => 'object',
+				'properties' => [
+					'name'     => [
+						'type'        => 'string',
+						'title'       => 'Full Name',
+						'description' => 'The person\'s full name',
+					],
+					'age'      => [
+						'type'  => 'integer',
+						'title' => 'Age',
+					],
+					'nickname' => [
+						'type'    => [ 'string', 'null' ],
+						'default' => null,
+					],
+				],
+				'required'   => [ 'name', 'age' ],
+			],
+			SampleAnnotated::jsonSchema()
 		);
 	}
 }
