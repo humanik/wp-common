@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\PHPUnit\Tests\Support;
+namespace Humanik\WP\PHPUnit\Tests\Data;
 
-use Humanik\WP\Support\DataObject;
+use Humanik\WP\Data\DataObject;
 
 class SampleData extends DataObject {
 	public function __construct(

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\PHPUnit\Tests\Support;
+namespace Humanik\WP\PHPUnit\Tests\Data;
 
 use CuyZ\Valinor\Mapper\MappingError;
 use Illuminate\Support\Collection;

@@ -74,6 +74,11 @@ $posts = Post::query()
 
 Laravel-compatible DI container implementing `Illuminate\Contracts\Foundation\Application`. Supports service providers, booting lifecycle, and facades. Integrates with WordPress via `wp_get_environment_type()` and WP-CLI detection.
 
+### Data Layer (`includes/Data/`)
+
+- **DataObject**: Abstract base class for type-safe data transfer objects. Uses Valinor for mapping/normalization. Implements `Arrayable`, `Jsonable`, and `JsonSerializable`. Factory methods: `from()`, `fromArray()`, `fromJson()`, `collect()`. Includes `jsonSchema()` for automatic JSON Schema generation.
+- **JsonSchema**: Generates JSON Schema from DataObject class definitions using PHP reflection. Supports scalar types, nullable types, nested DataObjects, and typed arrays (via docblock annotations).
+
 ### Support Utilities (`includes/Support/`)
 
 - **ServiceProvider**: Abstract base extending Laravel's ServiceProvider with typed `$app` property (`Humanik\WP\Application`).

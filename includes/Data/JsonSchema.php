@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Humanik\WP\Support;
+namespace Humanik\WP\Data;
 
 use ReflectionClass;
 use ReflectionNamedType;

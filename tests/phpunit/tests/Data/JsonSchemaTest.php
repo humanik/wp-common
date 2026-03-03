@@ -1,14 +1,14 @@
 <?php
 
-	declare(strict_types=1);
+declare(strict_types=1);
 
-	namespace Humanik\WP\PHPUnit\Tests\Support;
+namespace Humanik\WP\PHPUnit\Tests\Data;
 
-	use WP_UnitTestCase;
+use WP_UnitTestCase;
 
-	/**
-	 * Tests for the JsonSchema class.
-	 */
+/**
+ * Tests for the JsonSchema class.
+ */
 class JsonSchemaTest extends WP_UnitTestCase {
 
 	/**
