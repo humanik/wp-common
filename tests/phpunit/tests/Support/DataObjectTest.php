@@ -190,6 +190,61 @@ class DataObjectTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that a DataObject instance validates against its JSON schema.
+	 */
+	public function test_validates_against_json_schema(): void {
+		$data = SampleData::from(
+			[
+				'name' => 'Alice',
+				'age'  => 30,
+			]
+		);
+
+		$this->assertTrue( rest_validate_value_from_schema( $data, SampleData::jsonSchema() ) );
+	}
+
+	/**
+	 * Test that a nested DataObject instance validates against its JSON schema.
+	 */
+	public function test_nested_validates_against_json_schema(): void {
+		$data = SampleWrapper::from(
+			[
+				'child' => [
+					'name' => 'Nested',
+					'age'  => 10,
+				],
+				'label' => 'wrapper',
+			]
+		);
+
+		$this->assertTrue( rest_validate_value_from_schema( $data, SampleWrapper::jsonSchema() ) );
+	}
+
+	/**
+	 * Test that a collection DataObject instance validates against its JSON schema.
+	 */
+	public function test_collection_validates_against_json_schema(): void {
+		$data = SampleCollection::from(
+			[
+				'name'  => 'group',
+				'items' => [
+					[
+						'name' => 'Alice',
+						'age'  => 30,
+					],
+					[
+						'name'    => 'Bob',
+						'age'     => 25,
+						'surname' => 'Smith',
+					],
+				],
+			]
+		);
+
+		$this->assertTrue( rest_validate_value_from_schema( $data, SampleCollection::jsonSchema() ) );
+	}
+
+	/**
 	 * Test nested DataObject serialization and deserialization.
 	 */
 	public function test_nested_data_object_round_trip(): void {

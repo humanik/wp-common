@@ -1,4 +1,5 @@
 .claude
+.envrc
 wordpress/
 .wp-env.override.json
 

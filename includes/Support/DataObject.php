@@ -20,7 +20,8 @@ use function Humanik\WP\make;
  * @implements Arrayable<string,mixed>
  */
 abstract class DataObject implements Arrayable, Jsonable, \JsonSerializable {
-	private static ?TreeMapper $mapper = null;
+	private static ?TreeMapper $mapper      = null;
+	private static ?JsonSchema $json_schema = null;
 
 	/** @var Normalizer<array<mixed>|scalar|null>|null */
 	private static ?Normalizer $normalizer = null;
@@ -56,6 +57,15 @@ abstract class DataObject implements Arrayable, Jsonable, \JsonSerializable {
 		return Collection::make( $items )
 			->map( static::from( ... ) )
 			->values();
+	}
+
+	/**
+	 * @return array<string,mixed>
+	 */
+	public static function jsonSchema(): array {
+		self::$json_schema ??= new JsonSchema();
+
+		return self::$json_schema->parse( static::class );
 	}
 
 	/**
