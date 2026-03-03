@@ -1,4 +1,5 @@
 wordpress/
+.wp-env.override.json
 
 ############
 ## Vendor
@@ -27,7 +28,6 @@ vendor/
 .cursor/
 .gemini/
 .windsurf/
-CLAUDE.md
 GEMINI.md
 
 ############

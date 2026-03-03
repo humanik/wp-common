@@ -28,6 +28,7 @@ require_once "{$_tests_dir}/includes/functions.php";
 function _manually_load_plugin()
 {
     require dirname(__DIR__, 2).'/wp-common.php';
+    require dirname(__DIR__, 3).'/advanced-custom-fields-pro/acf.php';
 }
 
 tests_add_filter('muplugins_loaded', '_manually_load_plugin');

@@ -38,16 +38,16 @@
 		"phpunit/phpunit": "^9.6",
 		"wp-phpunit/wp-phpunit": "^6.8",
 		"yoast/phpunit-polyfills": "^4.0",
-		"johnpbloch/wordpress": "^6.9",
 		"wp-cli/wp-cli": "^2.12",
-		"php-stubs/acf-pro-stubs": "^6.5"
+		"php-stubs/acf-pro-stubs": "^6.5",
+		"wpengine/advanced-custom-fields-pro": "^6.7",
+		"roots/wordpress-no-content": "^6.9"
 	},
 	"config": {
 		"allow-plugins": {
-			"composer/installers": true,
 			"php-http/discovery": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true,
-			"johnpbloch/wordpress-core-installer": true
+			"composer/installers": false,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"scripts": {
@@ -56,5 +56,11 @@
 		"phpstan": "phpstan analyze --memory-limit=1G",
 		"test": "npm run test",
 		"test-multisite": "npm run test-php-multisite"
-	}
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://connect.advancedcustomfields.com"
+		}
+	]
 }

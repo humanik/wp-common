@@ -1,5 +1,5 @@
 {
-	"core": "./wordpress",
-	"plugins": ["."],
+	"core": "./vendor/roots/wordpress-no-content",
+	"plugins": [".", "./vendor/wpengine/advanced-custom-fields-pro"],
 	"phpVersion": "8.3"
 }

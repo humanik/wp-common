@@ -18,7 +18,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	 * Test that from_array creates an instance with correct properties.
 	 */
 	public function test_from_array_creates_instance(): void {
-		$data = SampleData::fromArray(
+		$data = SampleData::from(
 			[
 				'name' => 'Alice',
 				'age'  => 30,
@@ -46,7 +46,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	 * Test that toArray returns an array representation.
 	 */
 	public function test_to_array_returns_array_representation(): void {
-		$data  = SampleData::fromArray(
+		$data  = SampleData::from(
 			[
 				'name' => 'Charlie',
 				'age'  => 40,
@@ -68,7 +68,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	 * Test that toJson returns a valid JSON string.
 	 */
 	public function test_to_json_returns_json_string(): void {
-		$data = SampleData::fromArray(
+		$data = SampleData::from(
 			[
 				'name' => 'Dana',
 				'age'  => 35,
@@ -83,7 +83,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	 * Test that toJson accepts encoding options.
 	 */
 	public function test_to_json_accepts_options(): void {
-		$data = SampleData::fromArray(
+		$data = SampleData::from(
 			[
 				'name' => 'Eve',
 				'age'  => 28,
@@ -110,7 +110,7 @@ class DataObjectTest extends WP_UnitTestCase {
 			'name' => 'Frank',
 			'age'  => 50,
 		];
-		$output = SampleData::fromArray( $input )->toArray();
+		$output = SampleData::from( $input )->toArray();
 
 		$this->assertSame(
 			[
@@ -177,7 +177,7 @@ class DataObjectTest extends WP_UnitTestCase {
 	public function test_from_array_with_invalid_data_throws(): void {
 		$this->expectException( MappingError::class );
 
-		SampleData::fromArray( [ 'name' => 'Valid' ] );
+		SampleData::from( [ 'name' => 'Valid' ] );
 	}
 
 	/**
@@ -202,7 +202,7 @@ class DataObjectTest extends WP_UnitTestCase {
 			'label' => 'wrapper',
 		];
 
-		$wrapper = SampleWrapper::fromArray( $input );
+		$wrapper = SampleWrapper::from( $input );
 
 		$this->assertInstanceOf( SampleWrapper::class, $wrapper );
 		$this->assertInstanceOf( SampleData::class, $wrapper->child );
