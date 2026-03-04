@@ -5,11 +5,7 @@
 		"@wordpress/env": "^10.27.0"
 	},
 	"scripts": {
-		"start": "wp-env start",
-		"stop": "wp-env stop",
-		"wp": "wp-env run cli wp",
-		"test": "wp-env run tests-cli --env-cwd=wp-content/plugins/$(basename $(pwd)) vendor/bin/phpunit -c phpunit.xml.dist",
-		"lint-php": "wp-env run cli --env-cwd=wp-content/plugins/$(basename $(pwd)) composer lint",
-		"test-php-multisite": "wp-env run tests-cli --env-cwd=wp-content/plugins/$(basename $(pwd)) vendor/bin/phpunit -c tests/phpunit/multisite.xml --verbose"
+		"start": "wp-env start --xdebug",
+		"stop": "wp-env stop"
 	}
 }

@@ -1,5 +1,6 @@
 .claude
 .envrc
+hooks
 wordpress/
 .wp-env.override.json
 

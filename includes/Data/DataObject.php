@@ -62,10 +62,19 @@ abstract class DataObject implements Arrayable, Jsonable, \JsonSerializable {
 	/**
 	 * @return array<string,mixed>
 	 */
-	public static function jsonSchema(): array {
+	public static function jsonSchema( bool $as_list = false ): array {
 		self::$json_schema ??= new JsonSchema();
 
-		return self::$json_schema->parse( static::class );
+		$schema = self::$json_schema->parse( static::class );
+
+		if ( $as_list ) {
+			return [
+				'type'  => 'array',
+				'items' => $schema,
+			];
+		}
+
+		return $schema;
 	}
 
 	/**

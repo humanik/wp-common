@@ -54,8 +54,7 @@
 		"phpcs": "phpcs",
 		"phpcbf": "phpcbf",
 		"phpstan": "phpstan analyze --memory-limit=1G",
-		"test": "npm run test",
-		"test-multisite": "npm run test-php-multisite"
+		"test": "npx wp-env run tests-cli --env-cwd=wp-content/plugins/$(basename $(pwd)) vendor/bin/phpunit"
 	},
 	"repositories": [
 		{

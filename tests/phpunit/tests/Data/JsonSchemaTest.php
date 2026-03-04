@@ -92,6 +92,30 @@ class JsonSchemaTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test as_list wraps schema in array type.
+	 */
+	public function test_as_list_wraps_in_array(): void {
+		$this->assertSame(
+			[
+				'type'  => 'array',
+				'items' => [
+					'type'       => 'object',
+					'properties' => [
+						'name'    => [ 'type' => 'string' ],
+						'age'     => [ 'type' => 'integer' ],
+						'surname' => [
+							'type'    => [ 'string', 'null' ],
+							'default' => null,
+						],
+					],
+					'required'   => [ 'name', 'age' ],
+				],
+			],
+			SampleData::jsonSchema( as_list: true )
+		);
+	}
+
+	/**
 	 * Test Field attribute adds title and description to schema.
 	 */
 	public function test_field_attribute(): void {
