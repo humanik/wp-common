@@ -538,6 +538,15 @@ class PostQueryBuilder {
 	}
 
 	/**
+	 * Add a sub meta query (for nested queries with relation).
+	 */
+	public function sub_meta_query( \Args\MetaQuery\Query $query, ?string $key = null ): static {
+		$this->args->meta_query->addQuery( $query, $key );
+
+		return $this;
+	}
+
+	/**
 	 * Add a meta query clause.
 	 *
 	 * @param  string  $key  Meta key.
@@ -546,14 +555,18 @@ class PostQueryBuilder {
 	 * @phpstan-param '='|'!='|'>'|'>='|'<'|'<='|'LIKE'|'NOT LIKE'|'IN'|'NOT IN'|'BETWEEN'|'NOT BETWEEN'|'EXISTS'|'NOT EXISTS'|'REGEXP'|'NOT REGEXP'|'RLIKE' $compare Comparison operator.
 	 * @phpstan-param 'NUMERIC'|'BINARY'|'CHAR'|'DATE'|'DATETIME'|'DECIMAL'|'SIGNED'|'TIME'|'UNSIGNED' $type Value type for CAST.
 	 */
-	public function where_meta( string $key, string|array|null $value = null, string $compare = '=', string $type = 'CHAR' ): static {
-		$clause          = new \Args\MetaQuery\Clause();
+	public function where_meta( string $key, string|array|null $value = null, string $compare = '=', ?string $type = null ): static {
+		$clause = new \Args\MetaQuery\Clause();
+
 		$clause->key     = $key;
 		$clause->compare = $compare;
-		$clause->type    = $type;
 
 		if ( ! \is_null( $value ) ) {
 			$clause->value = $value;
+		}
+
+		if ( ! \is_null( $type ) ) {
+			$clause->type = $type;
 		}
 
 		$this->args->meta_query->addClause( $clause );
